@@ -1,6 +1,11 @@
 // import App from './App'
 export default [
   {
+    path: '/login',
+    name: 'login',
+    component: r => require(['src/views/login/login.vue'], r)
+  },
+  {
     path: '/',
     name: 'index',
     component: r => require(['src/views/index.vue'], r),

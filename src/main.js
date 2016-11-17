@@ -7,7 +7,7 @@ import Vuex from 'vuex'
 import routes from './routes'
 import 'normalize.css'
 import 'element-ui/lib/theme-default/index.css'
-
+import store from './vuex/store'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -20,7 +20,8 @@ Vue.mixin({
     }
   }
 })
-Vue.http.options.root = 'http://localhost:19999/mock'
+Vue.http.options.root = 'http://localhost:8080'
+Vue.http.options.emulateJSON = true
 
 const router = new VueRouter({ routes })
 
@@ -28,8 +29,33 @@ const router = new VueRouter({ routes })
 const app = new Vue({
   el: '#app',
   router,
+  store: new Vuex.Store(store),
   template: '<App/>',
   components: { App }
+})
+
+const statusMap = {
+  0: 'checkout the internet connect',
+  404: 'this request is not exists',
+  500: 'server error'
+}
+
+Vue.http.interceptors.push((request, next) => {
+  next(response => {
+    if (response.ok) {
+      let result = response.data
+      if (result.success) {
+        response.data = result.data
+      } else {
+        app.$message.error(result.code + ':' + result.msg)
+        response.ok = false
+      }
+    } else {
+      let status = response.status
+      app.$message.error(statusMap[status] || 'unknow error')
+      console.log(response)
+    }
+  })
 })
 
 router.beforeEach((to, from, next) => {
