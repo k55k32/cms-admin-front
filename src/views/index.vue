@@ -21,9 +21,9 @@ el-row.index-wrapper
 <script>
 export default {
   created () {
-    this.post('menu').then(({data}) => {
-      this.menuItems = data
-    })
+    // this.post('menu').then(({data}) => {
+    //   this.menuItems = data
+    // })
   },
   data () {
     return {
