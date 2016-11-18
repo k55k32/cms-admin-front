@@ -1,14 +1,13 @@
 <template lang="jade">
 .login
-  el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login" , @submit="submit",  v-loading.body="loading")
+  el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
     h2 Login
-
     el-form-item(label="用户名" prop="username")
       el-input(v-model="user.username" size="large")
     el-form-item(label="密码" prop="password")
       el-input(v-model="user.password" size="large" type="password")
     el-form-item
-      el-button.btn-block(native-type="submit", type="primary", @click="submit") 登录
+      el-button.btn-block(native-type="submit", type="primary", @click.prevent="onSubmit") 登录
 
 </template>
 
@@ -28,11 +27,16 @@ export default {
     }
   },
   methods: {
-    submit () {
+    onSubmit (e) {
       this.loading = true
       this.post('user/token', this.user).then(({data}) => {
-        return this.$store.dispatch('login', data).then(data => {
+        let token = data
+        return this.$store.dispatch('login', token).then(data => {
           this.$message.success('login success')
+          let redirect = this.$route.query.redirect || '/'
+          if (redirect) {
+            this.$router.replace(redirect)
+          }
           return data
         })
       }).finally(() => {

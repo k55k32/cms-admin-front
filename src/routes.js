@@ -1,8 +1,10 @@
 // import App from './App'
+const ignoreAuth = {authorization: false}
 export default [
   {
     path: '/login',
     name: 'login',
+    meta: ignoreAuth,
     component: r => require(['src/views/login/login.vue'], r)
   },
   {
@@ -14,6 +16,7 @@ export default [
         path: 'no-page/:message',
         name: 'no-page',
         title: '',
+        meta: ignoreAuth,
         component: r => require(['src/views/no-page.vue'], r)
       },
       {
