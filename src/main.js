@@ -62,7 +62,12 @@ Vue.http.interceptors.push((request, next) => {
   next(response => {
     if (response.ok) {
       let result = response.data
-      response.data = result.data
+      if (result.success) {
+        response.data = result.data
+      } else {
+        app.$message.error(result.msg)
+        response.ok = false
+      }
     } else {
       let status = response.status
       switch (status) {

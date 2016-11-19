@@ -83,9 +83,10 @@ export default {
 .content-body{
   padding-top: @header-heigth;
   height: 100%;
-  overflow-y: auto;
   .wrapper{
     padding: 10px;
+    height: 100%;
+    overflow-y: auto;
   }
 }
 </style>

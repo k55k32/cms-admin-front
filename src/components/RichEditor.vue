@@ -40,6 +40,6 @@ export default {
 .rich-editor-wrapper{
 }
 .rich-editor{
-  height: 500px;
+  height: 400px;
 }
 </style>
