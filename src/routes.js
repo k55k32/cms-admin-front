@@ -21,23 +21,13 @@ export default [
       },
       {
         path: 'article',
-        component: r => require(['src/views/article/article.vue'], r),
-        children: [
-          {
-            path: 'list',
-            name: 'article',
-            component: r => require(['src/views/article/list.vue'], r)
-          },
-          {
-            path: 'edit',
-            component: r => require(['src/views/article/edit.vue'], r)
-          }
-        ]
+        name: 'article',
+        component: r => require(['src/views/article/list.vue'], r)
       },
       {
-        path: 'catalog/index',
+        path: 'catalog',
         name: 'catalog',
-        component: r => require(['src/views/catalog/catalog.vue'], r)
+        component: r => require(['src/views/catalog/list.vue'], r)
       }
     ]
   }

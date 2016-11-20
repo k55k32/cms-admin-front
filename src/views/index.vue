@@ -19,16 +19,11 @@ el-row.index-wrapper
 </template>
 
 <script>
+import menus from './menus'
 export default {
   data () {
     return {
-      menuItems: [
-        {
-          id: 'article',
-          text: '文章管理',
-          name: 'article'
-        }
-      ],
+      menuItems: menus,
       lastItem: {}
     }
   },

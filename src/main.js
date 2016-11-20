@@ -7,11 +7,20 @@ import routes from './routes'
 import 'normalize.css'
 import 'element-ui/lib/theme-default/index.css'
 import './styles/global.less'
-
 import store from './vuex/store'
+import {dateFormat} from './utils/util'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
+
+Vue.filter('datetime', value => {
+  if (value) {
+    let date = new Date(value)
+    return dateFormat(date, 'yyyy-MM-dd hh:mm')
+  } else {
+    return ''
+  }
+})
 
 Vue.mixin({
   computed: {
@@ -24,7 +33,7 @@ Vue.mixin({
       return this.$http.post(url, data, {headers: this.headers, ...options})
     },
     put (url, data, options) {
-      return this.$http.post(url, data, {headers: this.headers, ...options})
+      return this.$http.put(url, data, {headers: this.headers, ...options})
     },
     get (url, data, options) {
       return this.$http.get(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
@@ -32,10 +41,13 @@ Vue.mixin({
     delete (url, data, options) {
       return this.$http.delete(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
     },
-    serialize (data) {
+    serialize (data = {}) {
       let dataStr = ''
       Object.keys(data).forEach(k => {
-        dataStr += `${k}=${data[k]}&`
+        let value = data[k]
+        if (value !== null && value !== undefined) {
+          dataStr += `${k}=${value}&`
+        }
       })
       return dataStr.substr(0, dataStr.length - 1)
     }

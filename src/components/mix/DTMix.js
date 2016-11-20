@@ -2,13 +2,17 @@
 * table list mix -
 **/
 export default {
-  props: ['url'],
   created () {
     this.loadPage()
   },
   data () {
     return {
-      pageData: {}
+      url: this.$route.name,
+      pageData: {},
+      editData: {},
+      editDialog: false,
+      editLoading: false,
+      saveLoading: false
     }
   },
   computed: {
@@ -42,6 +46,33 @@ export default {
       .then(() => { return this.delete(this.url, {id}) })
       .then(() => { return this.loadPage() })
       .catch(() => {})
+    },
+    edit (id) {
+      if (id) {
+        this.editLoading = true
+        this.get(this.url + '/' + id).then(({data}) => {
+          this.editData = data
+          this.editDialog = true
+        }).finally(() => {
+          this.editLoading = false
+        })
+      } else {
+        this.editData = {}
+        this.editDialog = true
+      }
+    },
+    save (data) {
+      let requestPath = this.url
+      if (data.id) {
+        requestPath += '/' + data.id
+      }
+      this.saveLoading = true
+      this.post(requestPath, data).then(() => {
+        this.editDialog = false
+        this.loadPage()
+      }).finally(() => {
+        this.saveLoading = false
+      })
     }
   }
 }

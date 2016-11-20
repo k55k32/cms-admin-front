@@ -20,9 +20,7 @@ export default {
         this.$emit('input', this.getData())
       }
       editor.create()
-      if (this.value) {
-        this.setData(this.value)
-      }
+      this.setData(this.value)
     })
   },
   methods: {
