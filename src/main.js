@@ -6,15 +6,38 @@ import VueResource from 'vue-resource'
 import routes from './routes'
 import 'normalize.css'
 import 'element-ui/lib/theme-default/index.css'
+import './styles/global.less'
+
 import store from './vuex/store'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
 Vue.mixin({
+  computed: {
+    headers () {
+      return {'Authorization': store.state.token}
+    }
+  },
   methods: {
     post (url, data, options) {
-      return this.$http.post(url, data, {headers: {'Authorization': store.state.token}, ...options})
+      return this.$http.post(url, data, {headers: this.headers, ...options})
+    },
+    put (url, data, options) {
+      return this.$http.post(url, data, {headers: this.headers, ...options})
+    },
+    get (url, data, options) {
+      return this.$http.get(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
+    },
+    delete (url, data, options) {
+      return this.$http.delete(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
+    },
+    serialize (data) {
+      let dataStr = ''
+      Object.keys(data).forEach(k => {
+        dataStr += `${k}=${data[k]}&`
+      })
+      return dataStr.substr(0, dataStr.length - 1)
     }
   }
 })
@@ -25,9 +48,10 @@ const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
   if (to.matched.length === 0) {
-    router.replace({ name: 'no-page', params: {message: to.path} })
+    router.push({ name: 'no-page', params: {message: to.path} })
     next()
-  } else if (to.meta.authorization !== false && store.state.isLogin === false) {
+  } else if (to.meta.authorization !== false && store.state.login === false) {
+    console.log('auth before')
     let load = ElementUI.LoadingService({text: 'loading'})
     store.dispatch('login')
     .then((user) => {

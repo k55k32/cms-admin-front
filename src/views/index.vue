@@ -20,14 +20,16 @@ el-row.index-wrapper
 
 <script>
 export default {
-  created () {
-    // this.post('menu').then(({data}) => {
-    //   this.menuItems = data
-    // })
-  },
   data () {
     return {
-      menuItems: []
+      menuItems: [
+        {
+          id: 'article',
+          text: '文章管理',
+          name: 'article'
+        }
+      ],
+      lastItem: {}
     }
   },
   computed: {
@@ -47,7 +49,10 @@ export default {
         }
         if (defaultItem.name) return false
       })
-      return defaultItem
+      if (defaultItem.id) {
+        this.lastItem = defaultItem
+      }
+      return this.lastItem
     }
   }
 }

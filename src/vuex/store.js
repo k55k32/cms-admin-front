@@ -7,7 +7,7 @@ const localStorage = window.localStorage
 export default new Vuex.Store({
   state: {
     user: {},
-    isLogin: false,
+    login: false,
     token: ''
   },
   mutations: {

@@ -20,9 +20,19 @@ export default [
         component: r => require(['src/views/no-page.vue'], r)
       },
       {
-        path: 'article/index',
-        name: 'article',
-        component: r => require(['src/views/article/article.vue'], r)
+        path: 'article',
+        component: r => require(['src/views/article/article.vue'], r),
+        children: [
+          {
+            path: 'list',
+            name: 'article',
+            component: r => require(['src/views/article/list.vue'], r)
+          },
+          {
+            path: 'edit',
+            component: r => require(['src/views/article/edit.vue'], r)
+          }
+        ]
       },
       {
         path: 'catalog/index',
