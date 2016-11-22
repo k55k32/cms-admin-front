@@ -26,11 +26,7 @@ export default {
         pageSize: pageSize,
         currentPage: currentPage
       }).then(({data}) => {
-        let pageData = data
-        pageData.data.forEach(art => {
-          art.content = art.content.replace(/<[^>]*>/g, '')
-        })
-        this.pageData = pageData
+        this.pageData = data
       })
     },
     pageChange (currentPage) {

@@ -8,18 +8,13 @@ import 'normalize.css'
 import 'element-ui/lib/theme-default/index.css'
 import './styles/global.less'
 import store from './vuex/store'
-import {dateFormat} from './utils/util'
+import filters from './filters'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
-Vue.filter('datetime', value => {
-  if (value) {
-    let date = new Date(value)
-    return dateFormat(date, 'yyyy-MM-dd hh:mm')
-  } else {
-    return ''
-  }
+Object.keys(filters).forEach(k => {
+  Vue.filter(k, filters[k])
 })
 
 Vue.mixin({
@@ -55,7 +50,9 @@ Vue.mixin({
 })
 Vue.http.options.root = 'http://localhost:8080'
 Vue.http.options.emulateJSON = true
-
+Vue.globalOptions = {
+  uploadUrl: 'http://42.96.203.79:22222/upload'
+}
 const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {

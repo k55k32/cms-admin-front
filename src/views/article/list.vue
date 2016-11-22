@@ -4,7 +4,8 @@ div
     el-button(type="primary" @click="edit()") 新增
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="editLoading")
     el-table-column(prop="title" label="标题")
-    el-table-column(prop="content", label="内容")
+    el-table-column(label="内容", inline-template)
+      span {{row.content | html2text | maxlength(50, true)}}
     el-table-column(inline-template label="创建时间")
       span {{row.createTime | datetime}}
     el-table-column(:context="_self", inline-template label="操作" )

@@ -1,27 +1,21 @@
 <template lang="jade">
 div
   el-form(label-position="top", :rules="rules", :model="from" ref="form")
-    el-form-item(label="文章标题" prop="title")
-      el-input(v-model="from.title" size="large")
-    el-form-item(label="文章内容" prop="content")
-      rich-editor(ref="editor" v-model="from.content", filename="file" , :upload="uploadUrl" , :headers="{Authorization: this.$store.state.token}")
+    el-form-item(label="栏目名称" prop="name")
+      el-input(v-model="from.name" size="large")
     el-form-item.el-dialog__footer
       el-button(type="default", @click="$emit('cancel')") 取消
       el-button(native-type="submit", type="primary", @click.prevent="saveAction") 保存
 </template>
 
 <script>
-import RichEditor from 'RichEditor'
-import Vue from 'vue'
 export default {
   props: ['data'],
-  components: { RichEditor },
   data () {
     return {
-      uploadUrl: Vue.globalOptions.uploadUrl,
-      from: {content: '', title: '', ...this.data},
+      from: {name: '', ...this.data},
       rules: {
-        title: {required: true}
+        name: {required: true}
       }
     }
   },
