@@ -1,9 +1,10 @@
 /**
 * table list mix -
+* inculde curd opeartor
 **/
 export default {
   created () {
-    this.loadPage()
+    if (this.autoload !== false) this.loadPage()
   },
   data () {
     return {
@@ -22,11 +23,14 @@ export default {
   },
   methods: {
     loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1) {
+      this.editLoading = true
       this.get(this.url, {
         pageSize: pageSize,
         currentPage: currentPage
       }).then(({data}) => {
         this.pageData = data
+      }).finally(() => {
+        this.editLoading = false
       })
     },
     pageChange (currentPage) {
@@ -39,7 +43,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-      .then(() => { return this.delete(this.url, {id}) })
+      .then(() => {
+        return this.delete(this.url, {id}).then(() => {
+          this.$message.success('删除成功')
+        })
+      })
       .then(() => { return this.loadPage() })
       .catch(() => {})
     },
