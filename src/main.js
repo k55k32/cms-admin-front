@@ -13,6 +13,12 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
+Vue.http.options.root = 'http://42.96.203.79:8080'
+Vue.http.options.emulateJSON = true
+Vue.globalOptions = {
+  uploadUrl: 'http://42.96.203.79:22222/upload'
+}
+
 Object.keys(filters).forEach(k => {
   Vue.filter(k, filters[k])
 })
@@ -48,11 +54,7 @@ Vue.mixin({
     }
   }
 })
-Vue.http.options.root = 'http://localhost:8080'
-Vue.http.options.emulateJSON = true
-Vue.globalOptions = {
-  uploadUrl: 'http://42.96.203.79:22222/upload'
-}
+
 const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
