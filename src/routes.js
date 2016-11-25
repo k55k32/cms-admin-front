@@ -8,6 +8,11 @@ export default [
     component: r => require(['src/views/login/login.vue'], r)
   },
   {
+    path: '/test',
+    meta: ignoreAuth,
+    component: r => require(['src/views/test.vue'], r)
+  },
+  {
     path: '/',
     name: 'index',
     component: r => require(['src/views/index.vue'], r),
