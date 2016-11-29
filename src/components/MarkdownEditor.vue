@@ -1,8 +1,8 @@
 <template lang="jade">
-.markdown
+.markdown(:class="{fullscreen:fullScreen}")
   .markdown-wrapper
     .markdown-tool
-      span.action-group
+      .action-group
         i.iconfont.icon-bold(@click="doCode('**')" hotkey="ctrl+b")
         i.iconfont.icon-italic(@click="doCode('*')" hotkey="ctrl+i")
         i.iconfont.icon-underline(@click="doAction('<u></u>', 3)" hotkey="ctrl+u")
@@ -11,16 +11,19 @@
         i.iconfont.icon-code(@click="toCode()")
         i.iconfont.icon-ellipsish(@click="doAction('\\n\\n---\\n\\n', 0, '')")
         i.iconfont.icon-quoteleft(@click="doAction('\\n> ', -1, '')")
-      span.action-group
-        i.iconfont.icon-mailreply
-        i.iconfont.icon-mailforward
-      span.action-group
-        i.iconfont.icon-compress
-        i.iconfont.icon-expand
+      .action-group
+        i.iconfont.icon-mailreply(@click="undo()", :class="{disabled: !canUndo}" hotkey="ctrl+z")
+        i.iconfont.icon-mailforward(@click="redo()", :class="{disabled: !canRedo}" hotkey="ctrl+y")
+      .action-group
+        i.iconfont.icon-compress(@click="toggleFullScrenn" v-if="fullScreen")
+        i.iconfont.icon-expand(@click="toggleFullScrenn" v-else)
     .markdown-content
-      .content-wrapper
+      .content-wrapper(@mousedown="beginDrag")
         textarea.markdown-editor(ref="editor" v-model="content" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" @keydown="keydown")
-        .markdown-preview(v-html="preview")
+        .preview-tool(ref="preTool")
+          .allow-wrapper(@click.stop="showPreview = !showPreview")
+            .allow(:class="{'allow-right':showPreview, 'allow-left':!showPreview}")
+        .markdown-preview(ref="preview" v-html="preview" v-show="showPreview", :style="{width: previewWidth + '%'}")
 </template>
 
 <script>
@@ -39,15 +42,86 @@ function setEditorRange (editor, start, length = 0) {
 }
 
 const markdown = markdownIt({
-  html: true
+  html: true,
+  breaks: true
 })
 export default {
   data () {
     return {
-      content: ''
+      content: '',
+      currentTimeout: '',
+      history: [],
+      currentIndex: 0,
+      showPreview: true,
+      previewWidth: 45,
+      fullScreen: false,
+      dragBegin: 0,
+      sizeBegin: 0
+    }
+  },
+  computed: {
+    preview () {
+      return markdown.render(this.content)
+    },
+    canUndo () {
+      return this.currentIndex > 0
+    },
+    canRedo () {
+      return this.currentIndex < this.history.length - 1
+    }
+  },
+  created () {
+    this.history.push(this.content)
+  },
+  watch: {
+    content () {
+      if (this.content === this.history[this.currentIndex]) return
+      window.clearTimeout(this.currentTimeout)
+      this.currentTimeout = setTimeout(() => {
+        this.saveHistory()
+      }, 500)
+    },
+    currentIndex () {
+      this.content = this.history[this.currentIndex]
     }
   },
   methods: {
+    beginDrag (e) {
+      if (this.showPreview) {
+        e.target === this.$refs.preTool && (this.dragBegin = e.screenX)
+        this.sizeBegin = this.$refs.preview.clientWidth
+        document.body.addEventListener('mousemove', this.moveDrag)
+        document.body.addEventListener('mouseup', this.endDrag)
+      }
+    },
+    moveDrag (e) {
+      if (this.dragBegin) {
+        e.preventDefault()
+        let move = e.screenX - this.dragBegin
+        let moveWidth = this.sizeBegin - move
+        this.$refs.preview.style.width = moveWidth + 'px'
+      }
+    },
+    endDrag (e) {
+      e.preventDefault()
+      this.dragBegin = false
+      document.body.removeEventListener('moveDrag', this.moveDrag)
+      document.body.removeEventListener('mouseup', this.endDrag)
+    },
+    toggleFullScrenn () {
+      this.fullScreen = !this.fullScreen
+    },
+    saveHistory () {
+      this.history.splice(this.currentIndex + 1, this.history.length)
+      this.history.push(this.content)
+      this.currentIndex = this.history.length - 1
+    },
+    undo () {
+      this.canUndo && this.currentIndex --
+    },
+    redo () {
+      this.canRedo && this.currentIndex ++
+    },
     keydown (e) {
       if (e.ctrlKey === true) {
         let code = e.key
@@ -98,36 +172,76 @@ export default {
       let after = this.content.substr(end, this.content.length)
       return {before, select, after}
     }
-  },
-  computed: {
-    preview () {
-      return markdown.render(this.content)
-    }
   }
 }
 </script>
 
 <style lang="less">
 @import "./styles/iconfont/iconfont.css";
-.markdown-editor{
-  border: 0;
-  outline: 0;
-  resize: none;
-  border-right: 1px solid #eee;
+@border: 2px solid rgba(0, 0, 0, 0.25);
+.allow{
+  @size: 15px;
+  height: @size;
+  width: @size;
+  border-left:@border;
+  border-top:@border;
+  &.allow-left{
+    transform: rotate(-45deg);
+  }
+  &.allow-right{
+    transform: rotate(135deg);
+  }
+}
+.preview-tool{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .allow-wrapper{
+    padding: 20px 8px;
+    &:hover{
+      background: rgba(0, 0, 0, 0.1);
+      &>.allow{
+        border-color: #000;
+      }
+    }
+  }
+}
+.markdown-preview{
+  min-width: 20%;
+  overflow: auto;
 }
 .markdown-tool{
-  padding: 10px;
+  display: flex;
+  overflow-x: auto;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0px 10px;
   .action-group{
     margin-right: 25px;
+    display: flex;
+    &:last-child{
+      margin: 0;
+    }
   }
   .iconfont{
     font-size: 1.5em;
-    padding: 15px;
+    padding:12px 15px;
+    &:hover:not(.disabled){
+      background: #fff;
+      cursor: pointer;
+    }
+    &.disabled{
+      color: #ccc;
+    }
   }
 }
 .markdown{
+  &.fullscreen{
+    position: fixed;
+  }
   background: #eee;
   height: 100%;
+  width: 100%;
   .markdown-wrapper{
     position: relative;
     height: 100%;
@@ -142,9 +256,13 @@ export default {
       height: 100%;
       width: 100%;
       display: flex;
-      &>*{
-        position: relative;
+      .markdown-editor{
         flex: 1;
+        border: 0;
+        outline: 0;
+        resize: none;
+        border-right: 1px solid #eee;
+        position: relative;
         box-sizing: border-box;
         padding: 10px;
         background: #fff;

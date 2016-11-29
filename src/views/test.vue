@@ -12,6 +12,7 @@ export default {
 
 <style lang="css">
 .test{
-  height: 100%;
+  height: 30%;
+  width: 80%;
 }
 </style>
