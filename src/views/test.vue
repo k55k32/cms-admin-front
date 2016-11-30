@@ -5,7 +5,7 @@
 
 <script>
 import editor from 'markdown-it-editor'
-import 'markdown-it-editor/lib/css/index.css'
+import 'markdown-it-editor/lib/index.css'
 
 export default {
   components: { editor }
