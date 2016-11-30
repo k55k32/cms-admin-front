@@ -4,10 +4,13 @@
 </template>
 
 <script>
-import editor from 'MarkdownEditor'
+import editor from 'markdown-it-editor'
+import 'markdown-it-editor/lib/css/index.css'
+
 export default {
   components: { editor }
 }
+
 </script>
 
 <style lang="css">
