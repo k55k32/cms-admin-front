@@ -7,22 +7,22 @@ div
       el-select(v-model="form.catalogId", placeholder="请选择")
         el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
     el-form-item(label="文章内容" prop="content")
-      //- rich-editor(ref="editor" v-model="form.content", filename="file" , :upload="uploadUrl" , :headers="{Authorization: this.$store.state.token}")
       .markdown-editor
-        markdown-editor(ref="markdown-editor" v-model="form.content", :upload="{url: uploadUrl, name: 'file'}")
+        markdown-editor(ref="markdown-editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}")
     el-form-item.el-dialog__footer
       el-button(type="default", @click="$emit('cancel')") 取消
       el-button(native-type="submit", type="primary", @click.prevent="saveAction") 保存
 </template>
 
 <script>
-import RichEditor from 'RichEditor'
-import MarkdownEditor from 'markdown-it-editor'
+import { MarkdownEditor } from 'markdown-it-editor'
 import 'markdown-it-editor/lib/index.css'
 import Vue from 'vue'
 export default {
   props: ['data'],
-  components: { RichEditor, MarkdownEditor },
+  components: {
+    MarkdownEditor
+  },
   created () {
     this.get('catalog/list').then(({data}) => {
       this.catalogs = data

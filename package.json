@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
+    "build-docs": "npm run build & git add . & git commit -m auto-deploy & git push ",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
     "element-ui": "^1.0.1",
-    "markdown-it-editor": "^1.0.7",
+    "markdown-it-editor": "^1.0.21",
     "normalize.css": "^5.0.0",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3",
