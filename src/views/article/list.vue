@@ -5,7 +5,7 @@ div
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="editLoading")
     el-table-column(prop="title" label="标题")
     el-table-column(label="内容", inline-template)
-      span {{row.content | html2text | maxlength(50, true)}}
+      span {{row.summary | maxlength(50, true)}}
     el-table-column(label="状态", inline-template)
       span {{status[row.status]}}
     el-table-column(inline-template label="创建时间")

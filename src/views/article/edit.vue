@@ -8,7 +8,9 @@ div
         el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
     el-form-item(label="文章内容" prop="content")
       .markdown-editor
-        markdown-editor(ref="markdown-editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}")
+        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}")
+    el-form-item(label="摘要" prop="summary")
+      textarea.article-summary(v-model="form.summary")
     el-form-item.el-dialog__footer
       el-button(type="default", @click="$emit('cancel')") 取消
       el-button(native-type="submit", type="primary", @click.prevent="saveAction") 保存
@@ -23,6 +25,13 @@ export default {
   components: {
     MarkdownEditor
   },
+  watch: {
+    'form.content' () {
+      this.$nextTick(() => {
+        this.form.summary = this.$refs.editor.getText().replace(/\n/g, '').substr(0, 300)
+      })
+    }
+  },
   created () {
     this.get('catalog/list').then(({data}) => {
       this.catalogs = data
@@ -32,7 +41,7 @@ export default {
     return {
       catalogs: [],
       uploadUrl: Vue.globalOptions.uploadUrl,
-      form: {content: '', title: '', catalogId: null, ...this.data},
+      form: {content: '', title: '', summary: '', catalogId: null, ...this.data},
       rules: {
         title: {required: true}
       }
@@ -49,5 +58,12 @@ export default {
 <style lang="less">
 .markdown-editor{
   height: 500px;
+}
+.article-summary{
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 5em;
+  resize: none;
 }
 </style>
