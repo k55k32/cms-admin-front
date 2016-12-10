@@ -1,6 +1,9 @@
 <template lang="jade">
-div
-  el-form(label-position="top", :rules="rules", :model="form" ref="form")
+.article-editor
+  el-form(label-position="left", label-width="100px", :rules="rules", :model="form" ref="form")
+    el-upload.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
+      i.el-icon-upload
+      .el-dragger__text 上传文章的banner图
     el-form-item(label="文章标题" prop="title")
       el-input(v-model="form.title" size="large")
     el-form-item(label="所属栏目")
@@ -8,12 +11,11 @@ div
         el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
     el-form-item(label="文章内容" prop="content")
       .markdown-editor
-        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}")
-    el-form-item(label="摘要" prop="summary")
-      textarea.article-summary(v-model="form.summary")
+        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}" @save-history="saveHistory", height="100%")
+    el-form-item(label="摘要" prop="summary" hidden)
+      el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
-      el-button(type="default", @click="$emit('cancel')") 取消
-      el-button(native-type="submit", type="primary", @click.prevent="saveAction") 保存
+      el-button(native-type="submit", type="primary", @click.prevent="saveAction") 发布
 </template>
 
 <script>
@@ -21,14 +23,14 @@ import { MarkdownEditor } from 'markdown-it-editor'
 import 'markdown-it-editor/lib/index.css'
 import Vue from 'vue'
 export default {
-  props: ['data'],
+  props: ['data', 'value'],
   components: {
     MarkdownEditor
   },
   watch: {
     'form.content' () {
       this.$nextTick(() => {
-        this.form.summary = this.$refs.editor.getText().replace(/\n/g, '').substr(0, 300)
+        this.generatorSummary()
       })
     }
   },
@@ -37,18 +39,40 @@ export default {
       this.catalogs = data
     })
   },
+  computed: {
+    banner () {
+      if (this.form.banner) {
+        return [{name: 'banner', url: this.form.banner}]
+      }
+      return []
+    }
+  },
   data () {
     return {
       catalogs: [],
       uploadUrl: Vue.globalOptions.uploadUrl,
-      form: {content: '', title: '', summary: '', catalogId: null, ...this.data},
+      form: {content: '', title: '', summary: '', banner: '', catalogId: null, status: 1, ...this.data},
       rules: {
         title: {required: true}
       }
     }
   },
   methods: {
+    uploadSuccess (r) {
+      this.form.banner = r
+    },
+    generatorSummary () {
+      this.form.summary = this.$refs.editor.getText().replace(/\n/g, '').substr(0, 300)
+    },
+    saveHistory () {
+      if (this.form.status === 1) {
+        this.post('article/save/draft', this.form).then(({data}) => {
+          this.form = {...this.form, ...data}
+        })
+      }
+    },
     saveAction () {
+      this.generatorSummary()
       this.$emit('save', this.form)
     }
   }
@@ -56,13 +80,23 @@ export default {
 </script>
 
 <style lang="less">
+.full-upload{
+  margin-bottom: 20px;
+  width: 100%;
+  .el-upload__inner{
+    width: 100%;
+  }
+  .el-dragger__cover img{
+    width: auto;
+    height: 100%;
+  }
+}
 .markdown-editor{
-  height: 500px;
+  height: 70vh;
 }
 .article-summary{
   padding: 5px;
   width: 100%;
-  box-sizing: border-box;
   height: 5em;
   resize: none;
 }

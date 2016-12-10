@@ -22,7 +22,7 @@ exports.substr = (value, start, length) => {
   return value
 }
 
-exports.maxlength = (value, length, ellipsis) => {
+exports.maxlength = (value, length, ellipsis = true) => {
   if (value) {
     if (value.length > length) {
       value = value.substr(0, length)

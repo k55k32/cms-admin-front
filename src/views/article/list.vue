@@ -2,10 +2,10 @@
 div
   .actions
     el-button(type="primary" @click="edit()") 新增
-  el-table(:data="pageData.data", border="", style="width: 100%" v-loading="editLoading")
+  el-table(:data="pageData.data", border="", style="width: 100%")
     el-table-column(prop="title" label="标题")
     el-table-column(label="内容", inline-template)
-      span {{row.summary | maxlength(50, true)}}
+      span {{row.summary | maxlength(30)}}
     el-table-column(label="状态", inline-template)
       span {{status[row.status]}}
     el-table-column(inline-template label="创建时间")
@@ -19,11 +19,10 @@ div
         el-button(size="small", type="danger", @click="remove(row.id)") 删除
   .pagination
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
-
   el-dialog(:title="preview.title", v-model="previewShow", size="full")
     markdown-preview(:content="preview.content")
-  el-dialog(title="新增", v-model="editDialog", size="full", v-if="editDialog")
-    edit(:data="editData" @save="save" @cancel="editDialog = false" v-loading="saveLoading")
+  el-dialog.editor-dialog(title="文章编辑", v-model="editDialog", size="full" v-if="editDialog"  v-loading="editLoading")
+    edit(:data="editData", @save="save" @cancel="editDialog = false" v-loading="saveLoading")
 </template>
 
 <script>
@@ -67,4 +66,23 @@ export default {
 </script>
 
 <style lang="less">
+.editor-dialog{
+  @title-padding: 20px;
+  .el-dialog--full{
+    display: flex;
+    flex-direction: column;
+  }
+  .el-dialog__header{
+    padding:@title-padding;
+  }
+  .el-dialog__body{
+    flex: 1;
+    overflow: auto;
+  }
+  .el-dialog__footer{
+    position: absolute;
+    top: 0px;
+    right: @title-padding * 2;
+  }
+}
 </style>
