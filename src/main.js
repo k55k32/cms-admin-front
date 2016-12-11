@@ -13,8 +13,12 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
-if (process.env.NODE_ENV === 'production') Vue.http.options.root = 'http://42.96.203.79:8080'
-else Vue.http.options.root = 'http://127.0.0.1:8889'
+if (process.env.NODE_ENV === 'production') {
+  Vue.http.options.root = 'http://42.96.203.79:8080'
+} else {
+  Vue.http.options.root = 'http://42.96.203.79:8080'
+  // Vue.http.options.root = 'http://127.0.0.1:8889'
+}
 
 Vue.http.options.emulateJSON = true
 Vue.globalOptions = {
@@ -64,8 +68,7 @@ router.beforeEach((to, from, next) => {
     router.push({ name: 'no-page', params: {message: to.path} })
     next()
   } else if (to.meta.authorization !== false && store.state.login === false) {
-    console.log('auth before')
-    let load = ElementUI.LoadingService({text: 'loading'})
+    let load = ElementUI.Loading.service({text: 'loading'})
     store.dispatch('login')
     .then((user) => {
       load.close()

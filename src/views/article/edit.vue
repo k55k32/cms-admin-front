@@ -41,10 +41,11 @@ export default {
   },
   computed: {
     banner () {
+      let array = []
       if (this.form.banner) {
-        return [{name: 'banner', url: this.form.banner}]
+        array = [{name: 'banner', url: this.form.banner}]
       }
-      return []
+      return array
     }
   },
   data () {
@@ -62,7 +63,7 @@ export default {
       this.form.banner = r
     },
     generatorSummary () {
-      this.form.summary = this.$refs.editor.getText().replace(/\n/g, '').substr(0, 300)
+      this.form.summary = this.$refs.editor.getText().replace(/\n/g, ' ').substr(0, 300)
     },
     saveHistory () {
       if (this.form.status === 1) {
