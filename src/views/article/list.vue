@@ -20,7 +20,7 @@ div
   .pagination
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
   el-dialog(:title="preview.title", v-model="previewShow", size="full")
-    markdown-preview(:content="preview.content")
+    markdown-preview(:content="preview.content", :options="MarkdownOptions")
   el-dialog.editor-dialog(title="文章编辑", v-model="editDialog", size="full" v-if="editDialog"  v-loading="editLoading")
     edit(:data="editData", @save="save" @cancel="editDialog = false" v-loading="saveLoading")
 </template>
@@ -29,13 +29,13 @@ div
 import DTMix from 'mix/DTMix'
 import edit from './edit'
 import { MarkdownPreview } from 'markdown-it-editor'
-
+import MarkdownMix from './MarkdownMix'
 const status = {
   0: '已删除', 1: '草稿中', 2: '已发布'
 }
 
 export default {
-  mixins: [DTMix],
+  mixins: [DTMix, MarkdownMix],
   components: {edit, MarkdownPreview},
   computed: {
     status () {

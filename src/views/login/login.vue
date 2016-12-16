@@ -39,7 +39,7 @@ export default {
           }
           return data
         })
-      }).finally(() => {
+      }).catch(() => {
         this.loading = false
       })
     }

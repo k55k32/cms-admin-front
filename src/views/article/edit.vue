@@ -11,7 +11,7 @@
         el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
     el-form-item(label="文章内容" prop="content")
       .markdown-editor
-        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}" @save-history="saveHistory", height="100%")
+        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%")
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
@@ -21,9 +21,11 @@
 <script>
 import { MarkdownEditor } from 'markdown-it-editor'
 import 'markdown-it-editor/lib/index.css'
+import MarkdownMix from './MarkdownMix'
 import Vue from 'vue'
 export default {
   props: ['data', 'value'],
+  mixins: [MarkdownMix],
   components: {
     MarkdownEditor
   },
