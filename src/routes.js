@@ -33,6 +33,11 @@ export default [
         path: 'catalog',
         name: 'catalog',
         component: r => require(['src/views/catalog/list.vue'], r)
+      },
+      {
+        path: 'tag',
+        name: 'tag',
+        component: r => require(['src/views/tag/list.vue'], r)
       }
     ]
   }

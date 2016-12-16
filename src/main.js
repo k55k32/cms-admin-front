@@ -16,8 +16,8 @@ Vue.use(VueResource)
 if (process.env.NODE_ENV === 'production') {
   Vue.http.options.root = 'http://42.96.203.79:8080'
 } else {
-  Vue.http.options.root = 'http://42.96.203.79:8080'
-  // Vue.http.options.root = 'http://127.0.0.1:8889'
+  // Vue.http.options.root = 'http://42.96.203.79:8080'
+  Vue.http.options.root = 'http://127.0.0.1:8889'
 }
 
 Vue.http.options.emulateJSON = true

@@ -4,11 +4,15 @@
     el-upload.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
       i.el-icon-upload
       .el-dragger__text 上传文章的banner图
-    el-form-item(label="文章标题" prop="title")
-      el-input(v-model="form.title" size="large")
-    el-form-item(label="所属栏目")
-      el-select(v-model="form.catalogId", placeholder="请选择")
-        el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
+    .flexrow
+      el-form-item.flex-1(label="文章标题" prop="title")
+        el-input(v-model="form.title")
+      el-form-item.flex-1(label="所属栏目")
+        el-select(v-model="form.catalogId", placeholder="请选择")
+          el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
+    el-form-item(label="文章标签")
+      el-select(v-model="form.tagIds", placeholder="请选择" multiple filterable allow-create)
+        el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
     el-form-item(label="文章内容" prop="content")
       .markdown-editor
         markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%")
@@ -40,6 +44,9 @@ export default {
     this.get('catalog/list').then(({data}) => {
       this.catalogs = data
     })
+    this.get('tag/list').then(({data}) => {
+      this.tags = data
+    })
   },
   computed: {
     banner () {
@@ -53,8 +60,9 @@ export default {
   data () {
     return {
       catalogs: [],
+      tags: [],
       uploadUrl: Vue.globalOptions.uploadUrl,
-      form: {content: '', title: '', summary: '', banner: '', catalogId: null, status: 1, ...this.data},
+      form: {content: '', title: '', summary: '', banner: '', catalogId: null, status: 1, tagIds: [], ...this.data},
       rules: {
         title: {required: true}
       }

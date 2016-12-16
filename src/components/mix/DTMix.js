@@ -12,8 +12,9 @@ export default {
       pageData: {},
       editData: {},
       editDialog: false,
-      editLoading: false,
-      saveLoading: false
+      listLoading: false,
+      saveLoading: false,
+      saveOptions: {}
     }
   },
   computed: {
@@ -23,14 +24,14 @@ export default {
   },
   methods: {
     loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1) {
-      this.editLoading = true
+      this.listLoading = true
       this.get(this.url, {
         pageSize: pageSize,
         currentPage: currentPage
       }).then(({data}) => {
         this.pageData = data
       }).finally(() => {
-        this.editLoading = false
+        this.listLoading = false
       })
     },
     pageChange (currentPage) {
@@ -53,12 +54,12 @@ export default {
     },
     edit (id) {
       if (id) {
-        this.editLoading = true
+        this.listLoading = true
         this.get(this.url + '/' + id).then(({data}) => {
           this.editData = data
           this.editDialog = true
         }).finally(() => {
-          this.editLoading = false
+          this.listLoading = false
         })
       } else {
         this.editData = {}
@@ -71,7 +72,7 @@ export default {
         requestPath += '/' + data.id
       }
       this.saveLoading = true
-      this.post(requestPath, data).then(() => {
+      this.post(requestPath, data, this.saveOptions).then(() => {
         this.editDialog = false
         this.loadPage()
       }).finally(() => {

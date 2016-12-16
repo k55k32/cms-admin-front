@@ -8,5 +8,10 @@ export default [
     id: 'catalog',
     text: '目录管理',
     name: 'catalog'
+  },
+  {
+    id: 'tag',
+    text: '标签管理',
+    name: 'tag'
   }
 ]

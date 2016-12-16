@@ -2,10 +2,13 @@
 div
   .actions
     el-button(type="primary" @click="edit()") 新增
-  el-table(:data="pageData.data", border="", style="width: 100%")
+  el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="title" label="标题")
-    el-table-column(label="内容", inline-template)
-      span {{row.summary | maxlength(30)}}
+    el-table-column(prop="catalogName" label="栏目")
+    el-table-column(label="标签", inline-template)
+      el-tag(type="primary" v-for="tag in row.tags"){{tag.name}}
+    //- el-table-column(label="内容", inline-template)
+    //-   span {{row.summary | maxlength(30)}}
     el-table-column(label="状态", inline-template)
       span {{status[row.status]}}
     el-table-column(inline-template label="创建时间")
@@ -21,7 +24,7 @@ div
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
   el-dialog(:title="preview.title", v-model="previewShow", size="full")
     markdown-preview(:content="preview.content", :options="MarkdownOptions")
-  el-dialog.editor-dialog(title="文章编辑", v-model="editDialog", size="full" v-if="editDialog"  v-loading="editLoading")
+  el-dialog.editor-dialog(title="文章编辑", v-model="editDialog", size="full" v-if="editDialog")
     edit(:data="editData", @save="save" @cancel="editDialog = false" v-loading="saveLoading")
 </template>
 
@@ -45,7 +48,8 @@ export default {
   data () {
     return {
       preview: {},
-      previewShow: false
+      previewShow: false,
+      saveOptions: { emulateJSON: false }
     }
   },
   methods: {
@@ -54,11 +58,11 @@ export default {
       this.preview = article
     },
     unpublish (id) {
-      this.editLoading = true
+      this.listLoading = true
       this.post('article/unpublish/' + id).then(() => this.loadPage())
     },
     publish (id) {
-      this.editLoading = true
+      this.listLoading = true
       this.post('article/publish/' + id).then(() => this.loadPage())
     }
   }
