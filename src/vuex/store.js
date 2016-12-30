@@ -24,6 +24,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    logout ({commit, state}) {
+      commit('LOGOUT')
+      if (state.token) {
+        return Vue.http.get('user/logout/' + state.token).then((data, e) => {
+          console.log(data, e)
+        })
+      }
+    },
     login ({commit}, token = localStorage.getItem('token')) {
       return new Promise((resolve, reject) => {
         if (!token) {

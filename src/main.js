@@ -6,6 +6,7 @@ import VueResource from 'vue-resource'
 import routes from './routes'
 import 'normalize.css'
 import 'element-ui/lib/theme-default/index.css'
+import './assets/font-awesome-4.7/css/font-awesome.css'
 import './styles/global.less'
 import store from './vuex/store'
 import filters from './filters'
@@ -18,8 +19,8 @@ if (process.env.NODE_ENV === 'production') {
   Vue.config.devtools = false
   Vue.config.silent = true
 } else {
-  Vue.http.options.root = 'http://42.96.203.79:8080'
-  // Vue.http.options.root = 'http://127.0.0.1:8889'
+  // Vue.http.options.root = 'http://42.96.203.79:8080'
+  Vue.http.options.root = 'http://127.0.0.1:8889'
 }
 
 Vue.http.options.emulateJSON = true
@@ -104,11 +105,12 @@ Vue.http.interceptors.push((request, next) => {
   next(response => {
     if (response.ok) {
       let result = response.data
-      if (result.success) {
-        response.data = result.data
-      } else {
+      if (!result) return response
+      if (result.success === false) {
         app.$message.error(result.msg)
         response.ok = false
+      } else if (result.success) {
+        response.data = result.data
       }
     } else {
       let status = response.status

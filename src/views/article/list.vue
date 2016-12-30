@@ -13,7 +13,7 @@ div
       span {{status[row.status]}}
     el-table-column(inline-template label="创建时间")
       span {{row.createTime | datetime}}
-    el-table-column(:context="_self", inline-template label="操作", min-width="100" )
+    el-table-column(:context="_self", inline-template label="操作", min-width="200px" )
       div
         el-button(size="small", @click="showPreview(row)") 预览
         el-button(size="small", @click="publish(row.id)" v-if='row.status === 1') 发布

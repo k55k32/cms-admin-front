@@ -13,6 +13,14 @@
 
 <script>
 export default {
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (to.query.logout === 'out') {
+        vm.$store.dispatch('logout')
+      }
+    })
+    next()
+  },
   data () {
     return {
       user: {

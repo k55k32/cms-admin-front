@@ -2,7 +2,8 @@
 el-row.index-wrapper
   el-col.nav(:span="4")
     el-menu.nav-menu(theme='dark' , :default-active = "defaultItem.id" , :default-openeds="[defaultItem.parentId]" ,:router="true")
-      .header-logo LOGO
+      .header-logo
+        img(src="../assets/logo.png")
       template(v-for="(item, index) in menuItems")
         el-menu-item( v-if="!item.children", :index="item.id" , :route="{name: item.name}") {{item.text}}
         el-submenu(:index="item.id" v-else)
@@ -12,7 +13,10 @@ el-row.index-wrapper
           el-menu-item(v-for="(child, index) in item.children", :index="child.id" , :route="{name: child.name}") {{child.text}}
   el-col.content(:span="20")
     .content-header
-      h2.title {{defaultItem.text || $route.title}}
+      header
+        h2.title {{defaultItem.text || $route.title}}
+        .user-operator
+          router-link.fa.fa-sign-out(:to="{name: 'login', query: {logout: 'out'}}" tag="i") 退出
     .content-body
       .wrapper
         router-view
@@ -58,6 +62,7 @@ export default {
 .index-wrapper{
   height: 100%;
   .nav, .nav-menu, .content{
+    position: relative;
     height: 100%;
     border-radius: 0;
   }
@@ -70,15 +75,24 @@ export default {
   justify-content: center;
   background: rgba(255, 255, 255, 0.1);
   margin-bottom: 20px;
+  &>img{
+    height: 100%;
+  }
 }
 .content-header{
-  position: fixed;
-  display: flex;
-  align-items: center;
+  position: absolute;
   width: 100%;
   height: @header-heigth;
   padding: 0 10px;
   border-bottom: @border;
+  header{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    .title{
+      flex: 1;
+    }
+  }
 }
 .content-body{
   padding-top: @header-heigth;
@@ -87,6 +101,11 @@ export default {
     padding: 10px;
     height: 100%;
     overflow-y: auto;
+  }
+}
+.user-operator{
+  &>.fa{
+    cursor: pointer;
   }
 }
 </style>
