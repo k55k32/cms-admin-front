@@ -6,7 +6,7 @@ div
     el-table-column(prop="title" label="标题")
     el-table-column(prop="catalogName" label="栏目")
     el-table-column(label="标签", inline-template)
-      el-tag(type="primary" v-for="tag in row.tags"){{tag.name}}
+      el-tag(type="primary" v-for="tag in row.tags") {{tag.name}}
     //- el-table-column(label="内容", inline-template)
     //-   span {{row.summary | maxlength(30)}}
     el-table-column(label="状态", inline-template)

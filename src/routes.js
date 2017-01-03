@@ -8,11 +8,6 @@ export default [
     component: r => require(['src/views/login/login.vue'], r)
   },
   {
-    path: '/test',
-    meta: ignoreAuth,
-    component: r => require(['src/views/test.vue'], r)
-  },
-  {
     path: '/',
     name: 'index',
     redirect: {name: 'article'},
@@ -39,6 +34,11 @@ export default [
         path: 'tag',
         name: 'tag',
         component: r => require(['src/views/tag/list.vue'], r)
+      },
+      {
+        path: 'pageview',
+        name: 'pageview',
+        component: r => require(['src/views/pageview/list.vue'], r)
       }
     ]
   }

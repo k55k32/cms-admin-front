@@ -34,6 +34,10 @@ export default {
         this.listLoading = false
       })
     },
+    sizeChange (size) {
+      this.pageData.pageSize = size
+      this.loadPage()
+    },
     pageChange (currentPage) {
       this.pageData.currentPage = currentPage
       this.loadPage()

@@ -13,5 +13,10 @@ export default [
     id: 'tag',
     text: '标签管理',
     name: 'tag'
+  },
+  {
+    id: 'pageview',
+    text: '浏览记录',
+    name: 'pageview'
   }
 ]
