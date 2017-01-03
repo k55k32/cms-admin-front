@@ -18,5 +18,10 @@ export default [
     id: 'pageview',
     text: '浏览记录',
     name: 'pageview'
+  },
+  {
+    id: 'setting',
+    text: '系统配置',
+    name: 'setting'
   }
 ]

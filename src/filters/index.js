@@ -31,3 +31,7 @@ exports.maxlength = (value, length, ellipsis = true) => {
   }
   return value
 }
+
+exports.number = (value) => {
+  return parseInt(value)
+}

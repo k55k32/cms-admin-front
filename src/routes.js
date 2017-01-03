@@ -39,6 +39,11 @@ export default [
         path: 'pageview',
         name: 'pageview',
         component: r => require(['src/views/pageview/list.vue'], r)
+      },
+      {
+        path: 'setting',
+        name: 'setting',
+        component: r => require(['src/views/setting/list.vue'], r)
       }
     ]
   }
