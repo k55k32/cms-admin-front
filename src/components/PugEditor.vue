@@ -1,8 +1,8 @@
 <template lang="pug">
-.pug-editor
-  .editor
+.pug-editor.flex
+  .editor.flex-2
     textarea(v-model="source")
-  .preview
+  .preview.flex-1
     textarea(:class="{'has-error': hasError}" 'readonly') {{preview}}
 </template>
 
@@ -12,14 +12,10 @@ import html2jade from '../assets/html2jade'
 
 export default {
   props: ['value'],
-  watch: {
-    value (newVal, old) {
-      if (!old) {
-        html2jade.convertHtml(newVal, {bodyless: true}, (ex, jade) => {
-          this.source = jade.substr(5)
-        })
-      }
-    }
+  created () {
+    html2jade.convertHtml(this.value, {bodyless: true}, (ex, jade) => {
+      this.source = jade.substr(5)
+    })
   },
   data () {
     return {
@@ -33,7 +29,7 @@ export default {
       try {
         this.hasError = false
         preview = pug.render(this.source)
-        this.$emit('value', preview)
+        this.$emit('input', preview)
       } catch (e) {
         this.hasError = true
         preview = e
@@ -48,7 +44,7 @@ export default {
 .pug-editor{
   textarea{
     width: 100%;
-    height: 8em;
+    height: 15em;
     resize: none;
     &.has-error{
       color: red

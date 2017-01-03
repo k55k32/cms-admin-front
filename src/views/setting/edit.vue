@@ -27,12 +27,6 @@ export default {
       require(['PugEditor'], r)
     }
   },
-  watch: {
-    'form.value' (newVal, old) {
-      console.log('new', newVal)
-      console.log('old', old)
-    }
-  },
   data () {
     return {
       form: {name: '', value: '', type: 1, description: '', ...this.data},
