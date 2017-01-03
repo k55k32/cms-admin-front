@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   el-form(label-position="top", :rules="rules", :model="from" ref="form")
     el-form-item(label="栏目名称" prop="name")

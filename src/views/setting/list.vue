@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   .actions
     el-button(type="primary" @click="edit()") 新增
@@ -12,7 +12,7 @@ div
         el-button(size="small", type="danger", @click="remove(row.id)") 删除
   .pagination
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
-  el-dialog(title="新增", v-model="editDialog", v-if="editDialog")
+  el-dialog(title="新增", v-model="editDialog", v-if="editDialog", size="large")
     edit(:data="editData" @save="save" @cancel="editDialog = false" v-loading="saveLoading")
 </template>
 

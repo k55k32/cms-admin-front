@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 el-row.index-wrapper
   el-col.nav(:span="4")
     el-menu.nav-menu(theme='dark' , :default-active = "defaultItem.id" , :default-openeds="[defaultItem.parentId]" ,:router="true")

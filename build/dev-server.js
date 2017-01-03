@@ -73,5 +73,5 @@ module.exports = function() {
       opn(uri)
     }
   })
-  mockserver(19999)
+  // mockserver(19999) // disable mockserver
 }()

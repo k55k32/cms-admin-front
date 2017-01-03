@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div
   .actions
     el-button(type="primary" @click="edit()") 新增

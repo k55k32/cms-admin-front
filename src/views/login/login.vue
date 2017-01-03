@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .login
   el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
     h2 Login

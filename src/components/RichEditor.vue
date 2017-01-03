@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 div.rich-editor-wrapper
   div.rich-editor
 </template>

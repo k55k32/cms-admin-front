@@ -1,13 +1,13 @@
-<template lang="jade">
+<template lang="pug">
 div
   el-form(label-position="top", :rules="rules", :model="form" ref="form")
     el-form-item(label="Name" prop="name")
       el-input(v-model="form.name")
-    el-form-item(label="Value" prop="value")
-      el-input(v-model="form.value")
     el-form-item(label="Type" prop="type")
       el-select(v-model="form.type")
-        el-option(v-for="name,key in types", :label="name", :value="key | number")
+        el-option(v-for="value,key in types", :label="value.text", :value="key | number")
+    el-form-item(label="Value" prop="value")
+      component(:is="types[form.type].componentName" v-model="form.value")
     el-form-item(label="Desc" prop="description")
       el-input(v-model="form.description")
     .el-dialog__footer
@@ -17,10 +17,22 @@ div
 
 <script>
 const TypeMap = {
-  1: '文本'
+  1: {text: '文本', componentName: 'el-input'},
+  2: {text: 'Pug', componentName: 'pug-editor'}
 }
 export default {
   props: ['data'],
+  components: {
+    PugEditor (r) {
+      require(['PugEditor'], r)
+    }
+  },
+  watch: {
+    'form.value' (newVal, old) {
+      console.log('new', newVal)
+      console.log('old', old)
+    }
+  },
   data () {
     return {
       form: {name: '', value: '', type: 1, description: '', ...this.data},

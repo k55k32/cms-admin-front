@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .pageview
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(inline-template label="名称")

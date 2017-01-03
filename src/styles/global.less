@@ -16,6 +16,12 @@
 .flexrow{
   display: flex;
   margin: 0px -@flex-padding;
+  [class*="flex-"] {
+    padding: 0px @flex-padding;
+  }
+}
+.flex{
+  display: flex;
 }
 .flex-1{
   flex: 1;
@@ -28,7 +34,4 @@
 }
 .flex-4{
   flex: 4;
-}
-[class*="flex-"] {
-  padding: 0px @flex-padding;
 }

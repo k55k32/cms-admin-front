@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 .article-editor
   el-form(label-position="left", label-width="100px", :rules="rules", :model="form" ref="form")
     el-upload.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
