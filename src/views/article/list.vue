@@ -25,7 +25,7 @@ div
   el-dialog(:title="preview.title", v-model="previewShow", size="full")
     markdown-preview(:content="preview.content", :options="MarkdownOptions")
   el-dialog.editor-dialog(title="文章编辑", v-model="editDialog", size="full" v-if="editDialog")
-    edit(:data="editData", @save="save" @cancel="editDialog = false" v-loading="saveLoading")
+    edit(:data="editData", @save="save", @close="closeEdit" @cancel="editDialog = false" v-loading="saveLoading")
 </template>
 
 <script>
@@ -64,6 +64,10 @@ export default {
     publish (id) {
       this.listLoading = true
       this.post('article/publish/' + id).then(() => this.loadPage())
+    },
+    closeEdit () {
+      this.editDialog = false
+      this.loadPage()
     }
   }
 }

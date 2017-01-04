@@ -19,7 +19,8 @@
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
-      el-button(native-type="submit", type="primary", @click.prevent="saveAction") 发布
+      el-button(type="primary", @click.prevent="saveDraft", v-if="isDraft") 保存
+      el-button(native-type="submit", type="primary", @click.prevent="saveAction") 保存并发布
 </template>
 
 <script>
@@ -55,6 +56,9 @@ export default {
         array = [{name: 'banner', url: this.form.banner}]
       }
       return array
+    },
+    isDraft () {
+      return this.form.status === 1
     }
   },
   data () {
@@ -75,9 +79,13 @@ export default {
     generatorSummary () {
       this.form.summary = this.$refs.editor.getText().replace(/\n/g, ' ').substr(0, 300)
     },
+    saveDraft () {
+      this.saveHistory()
+      this.$emit('close')
+    },
     saveHistory () {
-      if (this.form.status === 1) {
-        this.post('article/save/draft', this.form).then(({data}) => {
+      if (this.isDraft) {
+        return this.post('article/save/draft', this.form, { emulateJSON: false }).then(({data}) => {
           this.form = {...this.form, ...data}
         })
       }
