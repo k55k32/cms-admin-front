@@ -3,10 +3,10 @@
   .filter
     el-form
       el-form-item(label="时间范围")
-        el-date-picker(v-model='daterange', type='daterange', align='left', placeholder='选择日期范围', :picker-options='pickerOptions')
+        el-date-picker(v-model='daterange', type='daterange', @change="rangeChange", align='left', placeholder='选择日期范围', :picker-options='pickerOptions')
   el-tabs
     el-tab-pane(label='图表', name='first')
-      span tubiao
+      canvas(ref="chart" height="150")
     el-tab-pane(label='详情', name='second')
       el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
         el-table-column(inline-template label="名称")
@@ -21,6 +21,8 @@
 
 <script>
 import DTMix from 'mix/DTMix'
+import { dateFormat } from '../../utils/util'
+import Chart from 'chart.js'
 function getDateToNow (num) {
   const end = new Date()
   const start = new Date()
@@ -31,22 +33,40 @@ export default {
   mixins: [DTMix],
   watch: {
     daterange (val) {
+      // ISSUE the datetime changed on click TODO
+      console.log('change', val)
       this.loadPage()
+      this.loadCount()
     }
   },
   methods: {
+    rangeChange () {
+      console.log('change-ranged')
+    },
     getDateToNow (num) {
       const start = new Date()
       const end = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * num)
       return [start, end]
     },
-    async loadCount (queryParams = this.queryParams) {
-      let { data } = this.get('pv/range-count', queryParams)
-      this.rangeData = data
+    loadCount (queryParams = this.queryParams) {
+      this.get('pv/range-count', queryParams).then(({data}) => {
+        this.rangeData = data
+        this.renderChart()
+      })
+    },
+    renderChart () {
+      let cxt = this.$refs.chart.getContext('2d')
+      new Chart(cxt, {
+        type: 'line',
+        data: {
+          labels: this.labels,
+          datasets: [ this.rangeDataCtd ]
+        }
+      })
     }
   },
-  created () {
+  mounted () {
     this.loadCount()
   },
   computed: {
@@ -64,11 +84,28 @@ export default {
         end: end.getTime()
       }
     },
+    labels () {
+      let start = this.queryParams.start
+      let end = this.queryParams.end
+      let labels = []
+      for (let i = start; i <= end; i += 1000 * 60 * 60 * 24) {
+        let now = dateFormat(new Date(i), 'yyyy-MM-dd')
+        labels.push(now)
+      }
+      return labels
+    },
     rangeDataCtd () {
+      let rangeData = []
+      this.labels.forEach((label) => {
+        rangeData.push(this.rangeData[label] || 0)
+      })
+      return {
+        data: rangeData,
+        label: 'PageView'
+      }
     }
   },
   data () {
-    console.log('test', this)
     return {
       url: 'pv',
       daterange: getDateToNow(7),
