@@ -86,7 +86,7 @@ export default {
     saveHistory () {
       if (this.isDraft) {
         return this.post('article/save/draft', this.form, { emulateJSON: false }).then(({data}) => {
-          this.form = {...this.form, ...data}
+          if (this.form.id !== data.id) this.form = {...this.form, id: data.id}
         })
       }
     },
