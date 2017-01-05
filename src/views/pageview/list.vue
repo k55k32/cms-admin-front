@@ -34,7 +34,6 @@ export default {
   watch: {
     daterange (val) {
       // ISSUE the datetime changed on click TODO
-      console.log('change', val)
       this.loadPage()
       this.loadCount()
     }
