@@ -15,7 +15,7 @@
         el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
     el-form-item(label="文章内容" prop="content")
       .markdown-editor
-        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="50")
+        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
