@@ -17,7 +17,7 @@ el-row.index-wrapper
         h2.title {{defaultItem.text || $route.title}}
         .user-operator
           router-link.fa.fa-sign-out(:to="{name: 'login', query: {logout: 'out'}}" tag="i") 退出
-    .content-body
+    .content-body(v-loading="loadContent" element-loading-text="拼命加载中")
       .wrapper
         router-view
 </template>
@@ -25,10 +25,20 @@ el-row.index-wrapper
 <script>
 import menus from './menus'
 export default {
+  created () {
+    this.$router.beforeEach((to, from, next) => {
+      this.loadContent = true
+      next()
+    })
+    this.$router.afterEach(route => {
+      this.loadContent = false
+    })
+  },
   data () {
     return {
       menuItems: menus,
-      lastItem: {}
+      lastItem: {},
+      loadContent: false
     }
   },
   computed: {
@@ -97,6 +107,9 @@ export default {
 .content-body{
   padding-top: @header-heigth;
   height: 100%;
+  .el-loading-mask{
+    background: rgba(255, 255, 255, .2);
+  }
   .wrapper{
     padding: 10px;
     height: 100%;
