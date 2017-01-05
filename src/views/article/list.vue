@@ -30,7 +30,7 @@ div
 
 <script>
 import DTMix from 'mix/DTMix'
-import edit from './edit'
+// import edit from './edit'
 import { MarkdownPreview } from 'markdown-it-editor'
 import MarkdownMix from './MarkdownMix'
 const status = {
@@ -39,7 +39,10 @@ const status = {
 
 export default {
   mixins: [DTMix, MarkdownMix],
-  components: {edit, MarkdownPreview},
+  components: {
+    edit (r) { require(['./edit'], r) },
+    MarkdownPreview
+  },
   computed: {
     status () {
       return status

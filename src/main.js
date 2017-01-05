@@ -34,22 +34,22 @@ Object.keys(filters).forEach(k => {
 
 Vue.mixin({
   computed: {
-    headers () {
+    mix_headers () {
       return {'Authorization': store.state.token}
     }
   },
   methods: {
     post (url, data, options) {
-      return this.$http.post(url, data, {headers: this.headers, ...options})
+      return this.$http.post(url, data, {headers: this.mix_headers, ...options})
     },
     put (url, data, options) {
-      return this.$http.put(url, data, {headers: this.headers, ...options})
+      return this.$http.put(url, data, {headers: this.mix_headers, ...options})
     },
     get (url, data, options) {
-      return this.$http.get(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
+      return this.$http.get(`${url}?${this.serialize(data)}`, {headers: this.mix_headers, ...options})
     },
     delete (url, data, options) {
-      return this.$http.delete(`${url}?${this.serialize(data)}`, {headers: this.headers, ...options})
+      return this.$http.delete(`${url}?${this.serialize(data)}`, {headers: this.mix_headers, ...options})
     },
     serialize (data = {}) {
       let dataStr = ''

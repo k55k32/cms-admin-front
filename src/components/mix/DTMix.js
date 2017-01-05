@@ -23,11 +23,12 @@ export default {
     }
   },
   methods: {
-    loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1) {
+    loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1, queryParams = this.queryParams || {}) {
       this.listLoading = true
       this.get(this.url, {
         pageSize: pageSize,
-        currentPage: currentPage
+        currentPage: currentPage,
+        ...queryParams
       }).then(({data}) => {
         this.pageData = data
       }).finally(() => {
