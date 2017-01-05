@@ -6,7 +6,7 @@
         el-date-picker(v-model='daterange', type='daterange', @change="rangeChange", align='left', placeholder='选择日期范围', :picker-options='pickerOptions')
   el-tabs
     el-tab-pane(label='图表', name='first')
-      canvas(ref="chart" height="150")
+      canvas(ref="chart" height="100")
     el-tab-pane(label='详情', name='second')
       el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
         el-table-column(inline-template label="名称")
