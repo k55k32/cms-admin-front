@@ -1,21 +1,21 @@
 <template lang="pug">
 .article-editor
   el-form(label-position="left", label-width="100px", :rules="rules", :model="form" ref="form")
-    el-upload.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
-      i.el-icon-upload
-      .el-dragger__text 上传文章的banner图
     .flexrow
-      el-form-item.flex-1(label="文章标题" prop="title")
-        el-input(v-model="form.title")
-      el-form-item.flex-1(label="所属栏目")
-        el-select(v-model="form.catalogId", placeholder="请选择")
-          el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
-    el-form-item(label="文章标签")
-      el-select(v-model="form.tagIds", placeholder="请选择" multiple filterable allow-create)
-        el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
-    el-form-item(label="文章内容" prop="content")
-      .markdown-editor
-        markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
+      el-upload.flex-1.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
+        i.el-icon-upload
+        .el-dragger__text 上传文章的banner图
+      .flex-1
+        el-form-item(label="文章标题" prop="title")
+          el-input(v-model="form.title")
+        el-form-item(label="所属栏目")
+          el-select(v-model="form.catalogId", placeholder="请选择")
+            el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
+        el-form-item(label="文章标签")
+          el-select(v-model="form.tagIds", placeholder="请选择" multiple filterable allow-create)
+            el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
+    .markdown-editor
+      markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
@@ -106,8 +106,7 @@ export default {
     width: 100%;
   }
   .el-dragger__cover img{
-    width: auto;
-    height: 100%;
+    width: 100%;
   }
 }
 .markdown-editor{
@@ -118,5 +117,10 @@ export default {
   width: 100%;
   height: 5em;
   resize: none;
+}
+.el-form-item{
+  .el-select{
+    width: 100%;
+  }
 }
 </style>
