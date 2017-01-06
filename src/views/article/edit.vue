@@ -25,7 +25,6 @@
 
 <script>
 import { MarkdownEditor } from 'markdown-it-editor'
-import 'markdown-it-editor/lib/index.css'
 import MarkdownMix from './MarkdownMix'
 import Vue from 'vue'
 export default {

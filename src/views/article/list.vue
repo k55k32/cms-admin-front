@@ -1,18 +1,20 @@
 <template lang="pug">
 div
   .actions
+    el-button(type="primary" @click="reload()") 刷新
     el-button(type="primary" @click="edit()") 新增
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
-    el-table-column(prop="title" label="标题")
     el-table-column(prop="catalogName" label="栏目")
-    el-table-column(label="标签", inline-template)
-      el-tag(type="primary" v-for="tag in row.tags") {{tag.name}}
-    //- el-table-column(label="内容", inline-template)
-    //-   span {{row.summary | maxlength(30)}}
-    el-table-column(label="状态", inline-template)
+    el-table-column(prop="title" label="标题")
+    //- el-table-column(label="标签", inline-template)
+    //-   el-tag(type="primary" v-for="tag in row.tags") {{tag.name}}
+    el-table-column(label="状态", inline-template, width="80px")
       span {{status[row.status]}}
     el-table-column(inline-template label="创建时间")
-      span {{row.createTime | datetime}}
+      .table-input
+        el-date-picker(v-model="row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(row.id, row.createTime)")
+    el-table-column(inline-template label="更新时间")
+      span {{row.updateTime | datetime}}
     el-table-column(:context="_self", inline-template label="操作", min-width="200px" )
       div
         el-button(size="small", @click="showPreview(row)") 预览
@@ -30,7 +32,7 @@ div
 
 <script>
 import DTMix from 'mix/DTMix'
-// import edit from './edit'
+import 'markdown-it-editor/lib/index.css'
 import { MarkdownPreview } from 'markdown-it-editor'
 import MarkdownMix from './MarkdownMix'
 const status = {
@@ -56,9 +58,17 @@ export default {
     }
   },
   methods: {
+    reload () {
+      this.loadPage()
+    },
     showPreview (article) {
       this.previewShow = true
       this.preview = article
+    },
+    updateCreateTime (id, time) {
+      this.post('article/createtime/' + id, {time: time.getTime()}).then(() => {
+        this.$message.success('创建时间修改成功')
+      })
     },
     unpublish (id) {
       this.listLoading = true
@@ -77,6 +87,13 @@ export default {
 </script>
 
 <style lang="less">
+.table-input{
+  input{
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+}
 .editor-dialog{
   @title-padding: 20px;
   .el-dialog--full{
