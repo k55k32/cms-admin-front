@@ -15,7 +15,7 @@
           el-select(v-model="form.tagIds", placeholder="请选择" multiple filterable allow-create)
             el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
     .markdown-editor
-      markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
+      markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file', accept: 'image/jpg,image/jpeg,image/png,image/gif'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
