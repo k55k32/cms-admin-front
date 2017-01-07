@@ -4,8 +4,11 @@ div
     el-button(type="primary" @click="edit()") 新增
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="name" label="名称")
+    el-table-column(prop="description" label="描述")
     el-table-column(inline-template label="创建时间")
       span {{row.createTime | datetime}}
+    el-table-column(inline-template label="修改时间")
+      span {{row.updateTime | datetime}}
     el-table-column(:context="_self", inline-template label="操作" )
       div
         el-button(size="small", @click="edit(row.id)") 编辑
