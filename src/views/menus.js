@@ -15,6 +15,11 @@ export default [
     name: 'tag'
   },
   {
+    id: 'comment',
+    text: '评论管理',
+    name: 'comment'
+  },
+  {
     id: 'pageview',
     text: '浏览记录',
     name: 'pageview'

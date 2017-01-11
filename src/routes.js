@@ -44,6 +44,11 @@ export default [
         path: 'setting',
         name: 'setting',
         component: r => require(['src/views/setting/list.vue'], r)
+      },
+      {
+        path: 'comment',
+        name: 'comment',
+        component: r => require(['src/views/comment/list.vue'], r)
       }
     ]
   }
