@@ -35,3 +35,10 @@ exports.maxlength = (value, length, ellipsis = true) => {
 exports.number = (value) => {
   return parseInt(value)
 }
+const stateMap = {
+  1: '正常',
+  0: '已删除'
+}
+exports.state = (value) => {
+  return stateMap[value]
+}

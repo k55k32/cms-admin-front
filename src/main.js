@@ -7,6 +7,7 @@ import routes from './routes'
 import 'element-ui/lib/theme-default/index.css'
 import './assets/font-awesome-4.7/css/font-awesome.css'
 import './styles/global.less'
+import './styles/element-style.less'
 import store from './vuex/store'
 import filters from './filters'
 Vue.use(ElementUI)

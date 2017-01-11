@@ -23,6 +23,9 @@ export default {
     }
   },
   methods: {
+    searchPage () {
+      return this.loadPage()
+    },
     loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1, queryParams = this.queryParams || {}) {
       this.listLoading = true
       this.get(this.url, {
