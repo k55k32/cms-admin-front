@@ -15,8 +15,13 @@ npm run dev
 npm run build
 ```
 
-## plan
-update the element-ui to the new version   
-deleted comment recovery
+## PLAN
+new admin-init page. 3step   
+1. username(email-send), password
+2. vaild code send to the email-send
+3. post the first article. (hello world)   
+
+update the element-ui to the new version   2017-1-12 `done`   
+deleted comment recovery 2017-1-12 `done`   
 change the comment search  `article-select` to `filterable` 2017-1-12 `done`   
 user password-modify 2017-1-12 `done`   

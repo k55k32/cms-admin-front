@@ -26,7 +26,7 @@ div
       template(scope="scope")
         el-button(size="small", @click="edit(scope.row.id)") 编辑
         el-button(size="small", type="danger", @click="remove(scope.row.id)" v-if="!isDelete(scope.row.state)") 删除
-        el-button(size="small", type="success", @click="recovery(scope.row.id)" v-if="isDelete(scope.row.state)") 恢复
+        el-button(size="small", type="success", @click="recovery(scope.row)" v-if="isDelete(scope.row.state)") 恢复
   .pagination
     el-pagination(layout="total, sizes, prev, pager, next, jumper", @size-change="sizeChange", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
   el-dialog(title="编辑", v-model="editDialog", v-if="editDialog")
@@ -48,8 +48,10 @@ export default {
     isDelete (state) {
       return parseInt(state) === 0
     },
-    recovery (id) {
-      this.$message.success('recovery -' + id)
+    recovery (rowData) {
+      this.get(`comment/recovery/${rowData.id}`).then(() => {
+        rowData.state = 1
+      })
     }
   },
   created () {
