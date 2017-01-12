@@ -18,5 +18,5 @@ npm run build
 ## plan
 update the element-ui to the new version   
 deleted comment recovery
-change the comment search  `article-select` to `autocomplete`   
+change the comment search  `article-select` to `filterable` 2017-1-12 `done`   
 user password-modify 2017-1-12 `done`   
