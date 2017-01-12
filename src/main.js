@@ -86,15 +86,6 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-/* eslint-disable no-new */
-const app = new Vue({
-  el: '#app',
-  router,
-  store: store,
-  template: '<App/>',
-  components: { App }
-})
-
 const statusMap = {
   0: 'Cannot connect to server',
   404: 'request does not exist',
@@ -107,7 +98,7 @@ Vue.http.interceptors.push((request, next) => {
       let result = response.data
       if (!result) return response
       if (result.success === false) {
-        app.$message.error(result.msg)
+        ElementUI.Message.error(result.msg)
         response.ok = false
       } else if (result.success) {
         response.data = result.data
@@ -116,13 +107,22 @@ Vue.http.interceptors.push((request, next) => {
       let status = response.status
       switch (status) {
         case 401:
-          app.$message.error('login expired, please re-login')
+          ElementUI.Message.error('login expired, please re-login')
           router.replace({name: 'login', query: {redirect: app.$route.fullPath}})
           break
         default:
-          app.$message.error(statusMap[status] || response.body)
+          ElementUI.Message.error(statusMap[status] || response.body)
           break
       }
     }
   })
+})
+
+/* eslint-disable no-new */
+const app = new Vue({
+  el: '#app',
+  router,
+  store: store,
+  template: '<App/>',
+  components: { App }
 })

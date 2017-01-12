@@ -1,5 +1,7 @@
 <template lang="pug">
 el-row.index-wrapper
+  el-dialog(title="编辑", v-model="editDialog")
+    edit(:data="editData" @save="save" v-loading="saveLoading")
   el-col.nav(:span="4")
     el-menu.nav-menu(theme='dark' , :default-active = "defaultItem.id" , :default-openeds="[defaultItem.parentId]" ,:router="true")
       .header-logo
@@ -16,6 +18,7 @@ el-row.index-wrapper
       header
         h2.title {{defaultItem.text || $route.title}}
         .user-operator
+          i.fa.fa-user(@click="showEdit") 个人信息
           router-link.fa.fa-sign-out(:to="{name: 'login', query: {logout: 'out'}}" tag="i") 退出
     .content-body(v-loading="loadContent" element-loading-text="拼命加载中")
       .wrapper
@@ -24,7 +27,9 @@ el-row.index-wrapper
 
 <script>
 import menus from './menus'
+import edit from './user/edit'
 export default {
+  components: {edit},
   created () {
     this.$router.beforeEach((to, from, next) => {
       this.loadContent = true
@@ -34,11 +39,22 @@ export default {
       this.loadContent = false
     })
   },
+  methods: {
+    showEdit () {
+      this.editDialog = true
+    },
+    save (form) {
+      this.post('user/modify', {password: form.password})
+      this.editDialog = false
+    }
+  },
   data () {
     return {
       menuItems: menus,
       lastItem: {},
-      loadContent: false
+      loadContent: false,
+      editDialog: false,
+      editData: { username: this.$store.state.user.username, password: '' }
     }
   },
   computed: {
@@ -117,6 +133,9 @@ export default {
   }
 }
 .user-operator{
+  .fa + .fa{
+    margin-left: 15px;
+  }
   &>.fa{
     cursor: pointer;
   }

@@ -8,7 +8,6 @@
       el-input(v-model="user.password" size="large" type="password")
     el-form-item
       el-button.btn-block(native-type="submit", type="primary", @click.prevent="onSubmit") 登录
-
 </template>
 
 <script>

@@ -16,5 +16,7 @@ npm run build
 ```
 
 ## plan
-2017-1-12 update the element-ui to the new version   
-2017-1-12 change the comment search  `article-select` to `autocomplete`   
+update the element-ui to the new version   
+deleted comment recovery
+change the comment search  `article-select` to `autocomplete`   
+user password-modify 2017-1-12 `done`   

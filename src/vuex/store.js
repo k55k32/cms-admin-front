@@ -41,7 +41,6 @@ export default new Vuex.Store({
             let user = data
             commit('LOGIN', {user, token})
             resolve(user)
-            return user
           }).catch((data) => {
             reject(data)
           })
