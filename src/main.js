@@ -68,7 +68,7 @@ const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
   if (to.matched.length === 0) {
-    router.push({ name: 'no-page', params: {message: to.path} })
+    router.replace({ name: 'no-page', params: {message: to.path} })
     next()
   } else if (to.meta.authorization !== false && store.state.login === false) {
     let load = ElementUI.Loading.service({text: 'loading'})
@@ -110,6 +110,9 @@ Vue.http.interceptors.push((request, next) => {
           ElementUI.Message.error('login expired, please re-login')
           router.replace({name: 'login', query: {redirect: app.$route.fullPath}})
           break
+        case 402:
+          router.replace({name: 'init'})
+          break
         default:
           ElementUI.Message.error(statusMap[status] || response.body)
           break
@@ -126,3 +129,5 @@ const app = new Vue({
   template: '<App/>',
   components: { App }
 })
+
+app.$get('user/need-init')
