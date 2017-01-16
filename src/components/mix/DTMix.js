@@ -28,7 +28,7 @@ export default {
     },
     loadPage (pageSize = this.pageData.pageSize || 10, currentPage = this.pageData.currentPage || 1, queryParams = this.queryParams || {}) {
       this.listLoading = true
-      this.get(this.url, {
+      this.$get(this.url, {
         pageSize: pageSize,
         currentPage: currentPage,
         ...queryParams
@@ -53,7 +53,7 @@ export default {
         type: 'warning'
       })
       .then(() => {
-        return this.delete(this.url, {id}).then(() => {
+        return this.$delete(this.url, {id}).then(() => {
           this.$message.success('删除成功')
         })
       })
@@ -63,7 +63,7 @@ export default {
     edit (id) {
       if (id) {
         this.listLoading = true
-        this.get(this.url + '/' + id).then(({data}) => {
+        this.$get(this.url + '/' + id).then(({data}) => {
           this.editData = data
           this.editDialog = true
         }).finally(() => {
@@ -80,7 +80,7 @@ export default {
         requestPath += '/' + data.id
       }
       this.saveLoading = true
-      this.post(requestPath, data, this.saveOptions).then(() => {
+      this.$post(requestPath, data, this.saveOptions).then(() => {
         this.editDialog = false
         this.loadPage()
       }).finally(() => {

@@ -41,10 +41,10 @@ export default {
     }
   },
   created () {
-    this.get('catalog/list').then(({data}) => {
+    this.$get('catalog/list').then(({data}) => {
       this.catalogs = data
     })
-    this.get('tag/list').then(({data}) => {
+    this.$get('tag/list').then(({data}) => {
       this.tags = data
     })
   },
@@ -84,7 +84,7 @@ export default {
     },
     saveHistory () {
       if (this.isDraft) {
-        return this.post('article/save/draft', this.form, { emulateJSON: false }).then(({data}) => {
+        return this.$post('article/save/draft', this.form, { emulateJSON: false }).then(({data}) => {
           if (this.form.id !== data.id) this.form = {...this.form, id: data.id}
         })
       }

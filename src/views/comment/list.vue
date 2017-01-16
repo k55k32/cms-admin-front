@@ -49,13 +49,13 @@ export default {
       return parseInt(state) === 0
     },
     recovery (rowData) {
-      this.get(`comment/recovery/${rowData.id}`).then(() => {
+      this.$get(`comment/recovery/${rowData.id}`).then(() => {
         rowData.state = 1
       })
     }
   },
   created () {
-    this.get('article/id-title').then(({data}) => {
+    this.$get('article/id-title').then(({data}) => {
       this.articles = data
     })
   },

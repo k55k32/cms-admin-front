@@ -36,7 +36,7 @@ export default {
   methods: {
     onSubmit (e) {
       this.loading = true
-      this.post('user/token', this.user).then(({data}) => {
+      this.$post('user/token', this.user).then(({data}) => {
         let token = data
         return this.$store.dispatch('login', token).then(data => {
           this.$message.success('login success')

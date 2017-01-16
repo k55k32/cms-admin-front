@@ -67,17 +67,17 @@ export default {
     },
     updateCreateTime (id, time) {
       if (typeof time === 'number') return
-      this.post('article/createtime/' + id, {time: time.getTime()}).then(() => {
+      this.$post('article/createtime/' + id, {time: time.getTime()}).then(() => {
         this.$message.success('创建时间修改成功')
       })
     },
     unpublish (id) {
       this.listLoading = true
-      this.post('article/unpublish/' + id).then(() => this.loadPage())
+      this.$post('article/unpublish/' + id).then(() => this.loadPage())
     },
     publish (id) {
       this.listLoading = true
-      this.post('article/publish/' + id).then(() => this.loadPage())
+      this.$post('article/publish/' + id).then(() => this.loadPage())
     },
     closeEdit () {
       this.editDialog = false

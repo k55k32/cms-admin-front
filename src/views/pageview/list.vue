@@ -49,7 +49,7 @@ export default {
       return [start, end]
     },
     loadCount (queryParams = this.queryParams) {
-      this.get('pv/range-count', queryParams).then(({data}) => {
+      this.$get('pv/range-count', queryParams).then(({data}) => {
         this.rangeData = data
         this.renderChart()
       })

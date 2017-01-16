@@ -39,19 +39,19 @@ Vue.mixin({
     }
   },
   methods: {
-    post (url, data, options) {
+    $post (url, data, options) {
       return this.$http.post(url, data, {headers: this.mix_headers, ...options})
     },
-    put (url, data, options) {
+    $put (url, data, options) {
       return this.$http.put(url, data, {headers: this.mix_headers, ...options})
     },
-    get (url, data, options) {
-      return this.$http.get(`${url}?${this.serialize(data)}`, {headers: this.mix_headers, ...options})
+    $get (url, data, options) {
+      return this.$http.get(`${url}?${this.$serialize(data)}`, {headers: this.mix_headers, ...options})
     },
-    delete (url, data, options) {
-      return this.$http.delete(`${url}?${this.serialize(data)}`, {headers: this.mix_headers, ...options})
+    $delete (url, data, options) {
+      return this.$http.delete(`${url}?${this.$serialize(data)}`, {headers: this.mix_headers, ...options})
     },
-    serialize (data = {}) {
+    $serialize (data = {}) {
       let dataStr = ''
       Object.keys(data).forEach(k => {
         let value = data[k]

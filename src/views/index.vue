@@ -44,7 +44,7 @@ export default {
       this.editDialog = true
     },
     save (form) {
-      this.post('user/modify', {password: form.password})
+      this.$post('user/modify', {password: form.password})
       this.editDialog = false
     }
   },
