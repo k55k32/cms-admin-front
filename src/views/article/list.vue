@@ -10,9 +10,9 @@ div
     //-   el-tag(type="primary" v-for="tag in row.tags") {{tag.name}}
     el-table-column(label="状态", inline-template, width="80px")
       span {{status[row.status]}}
-    el-table-column(inline-template label="创建时间")
-      .table-input
-        el-date-picker(v-model="row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(row.id, row.createTime)")
+    el-table-column(label="创建时间")
+      template(scope="scope")
+        el-date-picker(v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
     el-table-column(inline-template label="更新时间")
       span {{row.updateTime | datetime}}
     el-table-column(:context="_self", inline-template label="操作", min-width="200px" )
@@ -66,6 +66,7 @@ export default {
       this.preview = article
     },
     updateCreateTime (id, time) {
+      if (typeof time === 'number') return
       this.post('article/createtime/' + id, {time: time.getTime()}).then(() => {
         this.$message.success('创建时间修改成功')
       })
