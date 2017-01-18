@@ -8,16 +8,16 @@
     template(v-if="step === 2")
       el-form(label-position="top", :rules="rules", :model="userForm" ref="form")
         el-form-item(label="用户名" prop="username")
-          el-input(v-model="userForm.username" type="email")
+          el-input(v-model="userForm.username" type="email" placeholder="Email")
         el-form-item(label="密码" prop="password")
-          el-input(v-model="userForm.password" type="password")
+          el-input(v-model="userForm.password" type="password" placeholder="Password")
         el-form-item(label="邮箱验证码" prop="code")
           .flex
             el-input.flex-1(v-model="userForm.code")
             el-button(@click="sendCode") 发送邮箱验证码
         el-form-item
           el-button(type="primary" @click="pre") 上一步
-          el-button(native-type="submit", type="primary" @click.prevent="saveUser") 设置管理员账号
+          el-button(native-type="submit", type="primary" @click.prevent="saveUser") 保存
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       loading: false,
-      step: 1,
+      step: 2,
       emailConfig: {},
       userForm: {username: '', password: '', code: ''},
       rules: {
@@ -91,7 +91,12 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="less">
+.user-init{
+  width: 600px;
+  margin: auto;
+  padding-top: 120px;
+}
 .init-wrapper{
   margin-top: 2em;
 }

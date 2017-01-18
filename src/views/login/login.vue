@@ -1,5 +1,5 @@
 <template lang="pug">
-.login-bg
+.main-bg
   .login
     el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
       el-form-item(prop="username")
@@ -56,12 +56,6 @@ export default {
 
 <style lang="less">
 @import "../../styles/base.less";
-.login-bg{
-  height: 100%;
-  width: 100%;
-  background: #3d3f47;
-  // background-image: url(../../assets/background.jpg);
-}
 .login{
   display: flex;
   height: 100%;
@@ -69,12 +63,6 @@ export default {
   justify-content: center;
   form{
     width: 300px;
-  }
-  .btn{
-    color: #fff;
-  }
-  .form-input{
-    color: #fff;
   }
 }
 </style>

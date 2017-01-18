@@ -1,9 +1,9 @@
 <template lang="pug">
   el-form(label-position="top", :rules="rules", :model="form" ref="form")
     el-form-item(label="Email" prop="emailAccount")
-      el-input(v-model="form.emailAccount" @change="emailChange")
+      el-input(v-model="form.emailAccount" @change="emailChange"  placeholder="Email")
     el-form-item(label="Password" prop="emailPassword")
-      el-input(v-model="form.emailPassword" type="password")
+      el-input(v-model="form.emailPassword" type="password" placeholder="Password")
     el-form-item(label="SMTP" prop="smtpHost")
       .flex
         el-input.flex1(v-model="form.smtpHost" placeholder="SMTP服务地址")
@@ -52,6 +52,6 @@ export default {
 
 <style lang="less">
 .input-mini{
-  width: 50px;
+  width: 120px;
 }
 </style>
