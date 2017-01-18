@@ -1,7 +1,7 @@
 <template lang="pug">
-.main-bg
+.main-bg(v-loading="loading")
   .login
-    el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
+    el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login")
       .title LOGIN
       el-form-item(prop="username")
         input.form-input(v-model="user.username" autocomplete="off" placeholder="Email")
