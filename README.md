@@ -16,10 +16,13 @@ npm run build
 ```
 
 ## PLAN
-new admin-init page. 3step   
-1. username(email-send), password
-2. vaild code send to the email-send
-3. post the first article. (hello world)   
+
+forget password for admin
+
+make login page beautiful `done` 2017-1-18
+new admin-init page. 2step   2017-1-18 `done`
+1. config you email smtp server
+2. register your login account (send email use `step-1` smtp config)
 
 update the element-ui to the new version   2017-1-12 `done`   
 deleted comment recovery 2017-1-12 `done`   

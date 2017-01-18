@@ -8,18 +8,24 @@ export default [
     component: r => require(['src/views/login/login.vue'], r)
   },
   {
+    path: '/init',
+    name: 'init',
+    meta: ignoreAuth,
+    component: r => require(['src/views/user/init.vue'], r)
+  },
+  {
+    path: '/no-page/:message',
+    name: 'no-page',
+    title: '404 no found',
+    meta: ignoreAuth,
+    component: r => require(['src/views/no-page.vue'], r)
+  },
+  {
     path: '/',
     name: 'index',
     redirect: {name: 'article'},
     component: r => require(['src/views/index.vue'], r),
     children: [
-      {
-        path: 'no-page/:message',
-        name: 'no-page',
-        title: '',
-        meta: ignoreAuth,
-        component: r => require(['src/views/no-page.vue'], r)
-      },
       {
         path: 'article',
         name: 'article',
@@ -49,6 +55,11 @@ export default [
         path: 'comment',
         name: 'comment',
         component: r => require(['src/views/comment/list.vue'], r)
+      },
+      {
+        path: 'email-config',
+        name: 'email-config',
+        component: r => require(['src/views/emailconfig/list.vue'], r)
       }
     ]
   }

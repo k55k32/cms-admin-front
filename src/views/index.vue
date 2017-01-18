@@ -5,7 +5,7 @@ el-row.index-wrapper
   el-col.nav(:span="4")
     el-menu.nav-menu(theme='dark' , :default-active = "defaultItem.id" , :default-openeds="[defaultItem.parentId]" ,:router="true")
       .header-logo
-        img(src="../assets/logo.png")
+        h2 Manager
       template(v-for="(item, index) in menuItems")
         el-menu-item( v-if="!item.children", :index="item.id" , :route="{name: item.name}") {{item.text}}
         el-submenu(:index="item.id" v-else)
@@ -18,8 +18,12 @@ el-row.index-wrapper
       header
         h2.title {{defaultItem.text || $route.title}}
         .user-operator
-          i.fa.fa-user(@click="showEdit") 个人信息
-          router-link.fa.fa-sign-out(:to="{name: 'login', query: {logout: 'out'}}" tag="i") 退出
+          span.operator(@click="showEdit")
+            i.fa.fa-user
+            span 个人信息
+          router-link.operator(:to="{name: 'login', query: {logout: 'out'}}" tag="span")
+            i.fa.fa-sign-out
+            span 退出
     .content-body(v-loading="loadContent" element-loading-text="拼命加载中")
       .wrapper
         router-view
@@ -99,7 +103,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
   &>img{
     height: 100%;
@@ -133,10 +137,11 @@ export default {
   }
 }
 .user-operator{
-  .fa + .fa{
+  .operator + .operator{
     margin-left: 15px;
   }
-  &>.fa{
+  .operator{
+    display: inline-block;
     cursor: pointer;
   }
 }

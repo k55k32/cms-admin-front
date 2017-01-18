@@ -6,8 +6,8 @@ div
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="catalogName" label="栏目")
     el-table-column(prop="title" label="标题")
-    //- el-table-column(label="标签", inline-template)
-    //-   el-tag(type="primary" v-for="tag in row.tags") {{tag.name}}
+      template(scope="scope")
+        u(@click="showPreview(scope.row)") {{scope.row.title}}
     el-table-column(label="状态", inline-template, width="80px")
       span {{status[row.status]}}
     el-table-column(label="创建时间")
@@ -15,13 +15,12 @@ div
         el-date-picker(v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
     el-table-column(inline-template label="更新时间")
       span {{row.updateTime | datetime}}
-    el-table-column(:context="_self", inline-template label="操作", min-width="200px" )
-      div
-        el-button(size="small", @click="showPreview(row)") 预览
-        el-button(size="small", @click="publish(row.id)" v-if='row.status === 1') 发布
-        el-button(size="small", @click="unpublish(row.id)" v-if='row.status === 2') 取消发布
-        el-button(size="small", @click="edit(row.id)") 编辑
-        el-button(size="small", type="danger", @click="remove(row.id)") 删除
+    el-table-column(:context="_self" label="操作", min-width="200px" )
+      template(scope="scope")
+        el-button(size="small", @click="publish(scope.row.id)" v-if='scope.row.status === 1') 发布
+        el-button(size="small", @click="unpublish(scope.row.id)" v-if='scope.row.status === 2') 取消发布
+        el-button(size="small", @click="edit(scope.row.id)") 编辑
+        el-button(size="small", type="danger", @click="remove(scope.row.id)") 删除
   .pagination
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
   el-dialog(:title="preview.title", v-model="previewShow", size="full")

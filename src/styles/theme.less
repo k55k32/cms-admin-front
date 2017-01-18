@@ -1,0 +1,40 @@
+@import "./base.less";
+.form-input{
+  height: 40px;
+  border-bottom: 1px solid #eee;
+  background: none;
+  border: 0;
+  outline: none;
+  border-bottom: @border;
+  font-size: 1.1em;
+  width: 100%;
+}
+
+.btn-block{
+  display: block;
+  width: 100%;
+}
+
+.btn{
+  padding: 10px;
+  background: none;
+  border: @border;
+}
+
+.main-bg{
+  height: 100%;
+  width: 100%;
+  background: #3d3f47;
+  .btn{
+    color: #fff;
+  }
+  .form-input{
+    color: #fff;
+  }
+  .el-loading-mask{
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+.markdown-editor{
+  height: 70vh;
+}
