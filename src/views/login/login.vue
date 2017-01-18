@@ -2,6 +2,7 @@
 .main-bg
   .login
     el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
+      .title LOGIN
       el-form-item(prop="username")
         input.form-input(v-model="user.username" autocomplete="off" placeholder="Email")
       el-form-item(prop="password")
@@ -57,6 +58,12 @@ export default {
 <style lang="less">
 @import "../../styles/base.less";
 .login{
+  color: #eee;
+  .title{
+    font-size: 2em;
+    font-weight: 100;
+    margin-bottom: 1em;
+  }
   display: flex;
   height: 100%;
   align-items: center;
