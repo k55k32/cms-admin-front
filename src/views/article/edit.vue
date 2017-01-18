@@ -98,28 +98,5 @@ export default {
 </script>
 
 <style lang="less">
-.full-upload{
-  margin-bottom: 20px;
-  width: 100%;
-  .el-upload__inner{
-    width: 100%;
-  }
-  .el-dragger__cover img{
-    width: 100%;
-  }
-}
-.markdown-editor{
-  height: 70vh;
-}
-.article-summary{
-  padding: 5px;
-  width: 100%;
-  height: 5em;
-  resize: none;
-}
-.el-form-item{
-  .el-select{
-    width: 100%;
-  }
-}
+
 </style>

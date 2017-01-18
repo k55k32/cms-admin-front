@@ -20,6 +20,11 @@ export default [
     name: 'comment'
   },
   {
+    id: 'email-config',
+    text: '邮箱配置',
+    name: 'email-config'
+  },
+  {
     id: 'pageview',
     text: '浏览记录',
     name: 'pageview'

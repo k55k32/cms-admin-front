@@ -55,6 +55,11 @@ export default [
         path: 'comment',
         name: 'comment',
         component: r => require(['src/views/comment/list.vue'], r)
+      },
+      {
+        path: 'email-config',
+        name: 'email-config',
+        component: r => require(['src/views/emailconfig/list.vue'], r)
       }
     ]
   }
