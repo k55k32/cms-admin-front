@@ -1,13 +1,13 @@
 <template lang="pug">
-.login
-  el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
-    h2 Login
-    el-form-item(label="用户名" prop="username")
-      el-input(v-model="user.username" size="large")
-    el-form-item(label="密码" prop="password")
-      el-input(v-model="user.password" size="large" type="password")
-    el-form-item
-      el-button.btn-block(native-type="submit", type="primary", @click.prevent="onSubmit") 登录
+.login-bg
+  .login
+    el-form.login-form(label-position="top", :rules="rules", :model="user", ref="login", v-loading.body="loading")
+      el-form-item(prop="username")
+        input.form-input(v-model="user.username" autocomplete="off" placeholder="Email")
+      el-form-item(prop="password")
+        input.form-input(v-model="user.password" type="password" autocomplete="off" placeholder="Password")
+      el-form-item
+        button.btn.btn-block(type="submit" @click.prevent="onSubmit") 登录
 </template>
 
 <script>
@@ -56,19 +56,25 @@ export default {
 
 <style lang="less">
 @import "../../styles/base.less";
+.login-bg{
+  height: 100%;
+  width: 100%;
+  background: #3d3f47;
+  // background-image: url(../../assets/background.jpg);
+}
 .login{
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
-  .login-form{
-    width: 600px;
-    padding: 20px;
-    border: @border;
+  form{
+    width: 300px;
   }
-  .btn-block{
-    display: block;
-    width: 100%;
+  .btn{
+    color: #fff;
+  }
+  .form-input{
+    color: #fff;
   }
 }
 </style>

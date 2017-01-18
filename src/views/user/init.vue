@@ -1,12 +1,23 @@
 <template lang="pug">
-div(v-loading="loading")
+.user-init(v-loading="loading")
   el-steps(:space="200", :active="step")
     el-step(title="邮箱配置" description="输入邮箱配置，作为服务器发件方的配置")
     el-step(title="账号配置" description="后台的管理员端账号配置")
-    el-step(title="账号验证" description="后台管理端账号验证")
-  email-config-edit(v-if="step === 1" @save="saveConfig", :data="emailConfig")
-  el-button(type="primary" @click="pre" v-if="step > 1") 上一步
-  el-button(type="primary" @click="finish" v-if="step === 3") 完成
+  .init-wrapper
+    email-config-edit(v-if="step === 1" @save="saveConfig", :data="emailConfig")
+    template(v-if="step === 2")
+      el-form(label-position="top", :rules="rules", :model="userForm" ref="form")
+        el-form-item(label="用户名" prop="username")
+          el-input(v-model="userForm.username" type="email")
+        el-form-item(label="密码" prop="password")
+          el-input(v-model="userForm.password" type="password")
+        el-form-item(label="邮箱验证码" prop="code")
+          .flex
+            el-input.flex-1(v-model="userForm.code")
+            el-button(@click="sendCode") 发送邮箱验证码
+        el-form-item
+          el-button(type="primary" @click="pre") 上一步
+          el-button(native-type="submit", type="primary" @click.prevent="saveUser") 设置管理员账号
 </template>
 
 <script>
@@ -17,7 +28,13 @@ export default {
     return {
       loading: false,
       step: 1,
-      emailConfig: {}
+      emailConfig: {},
+      userForm: {username: '', password: '', code: ''},
+      rules: {
+        username: {required: true, type: 'email'},
+        password: {required: true},
+        code: {required: true}
+      }
     }
   },
   created () {
@@ -35,6 +52,27 @@ export default {
     loaded () {
       this.loading = false
     },
+    sendCode () {
+      this.$refs.form.validateField('username', (s) => {
+        if (!s) {
+          this.load()
+          this.$post('user/init-send-email', {email: this.userForm.username}).then(() => {
+            this.$message.success('发送验证码成功')
+          }).finally(this.loaded)
+        }
+      })
+    },
+    saveUser () {
+      this.$refs.form.validate(c => {
+        if (c) {
+          this.load()
+          this.$post('user/init-register', this.userForm).then(() => {
+            this.$message.success('注册成功')
+            this.$router.replace({name: 'login'})
+          }).finally(this.loaded)
+        }
+      })
+    },
     saveConfig (form) {
       this.load()
       this.emailConfig = form
@@ -42,9 +80,6 @@ export default {
         this.emailConfig = data
         this.step = 2
       }).finally(() => this.loaded())
-    },
-    finish () {
-      console.log('finish')
     },
     pre () {
       this.step --
@@ -57,4 +92,7 @@ export default {
 </script>
 
 <style lang="css">
+.init-wrapper{
+  margin-top: 2em;
+}
 </style>
