@@ -7,7 +7,7 @@ div
     el-form(:inline="true")
       el-form-item(label="状态")
         el-select(v-model="queryParams.status" clearable )
-          el-option(v-for="v, k in status", :label="v", :value="k")
+          el-option(v-for="v, k in status", :label="v.text", :value="k")
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="catalogName" label="栏目")
     el-table-column(prop="title" label="标题")
@@ -15,7 +15,7 @@ div
         u(@click="showPreview(scope.row)") {{scope.row.title}}
     el-table-column(label="状态", width="80px")
       template(scope="scope")
-        span {{status[scope.row.status]}}
+        el-tag(:type="status[scope.row.status].type") {{status[scope.row.status].text}}
     el-table-column(label="创建时间")
       template(scope="scope")
         el-date-picker(v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
@@ -42,9 +42,9 @@ import 'markdown-it-editor/lib/index.css'
 import { MarkdownPreview } from 'markdown-it-editor'
 import MarkdownMix from './MarkdownMix'
 const status = {
-  2: '已发布',
-  1: '草稿中',
-  0: '已删除'
+  2: { text: '已发布', type: 'success' },
+  1: { text: '草稿中', type: '' },
+  0: { text: '已删除', type: 'danger' }
 }
 
 export default {
