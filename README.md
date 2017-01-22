@@ -19,6 +19,11 @@ npm run build
 
 forget password for admin
 
+2017-1-22  
+1. `status` filter for article-list  
+2. more information in pageview (add `userAgent` `fullPath`)
+3. remember username and password (login page, save in `localStorage`)
+
 make login page beautiful `done` 2017-1-18
 new admin-init page. 2step   2017-1-18 `done`
 1. config you email smtp server
