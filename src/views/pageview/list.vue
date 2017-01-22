@@ -9,12 +9,14 @@
       canvas(ref="chart" height="100")
     el-tab-pane(label='详情', name='second')
       el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
-        el-table-column(inline-template label="名称")
-          el-tooltip(effect="light", :content="'参数:' + row.params", placement="top-start")
-            a(:href="'http://diamondfsd.com' + row.fullPath" target="_blank") {{row.name}}
-        el-table-column(inline-template label="创建时间")
-          span {{row.createTime | datetime}}
+        el-table-column(label="名称")
+          template(scope="scope")
+            a(:href="'https://diamondfsd.com' + scope.row.fullPath" target="_blank") {{scope.row.fullPath}}
+        el-table-column(label="访问时间")
+          template(scope="scope")
+            span {{scope.row.createTime | datetime}}
         el-table-column(prop="ip" label="IP")
+        el-table-column(prop="userAgent" label="userAgent")
       .pagination
         el-pagination(layout="total, sizes, prev, pager, next, jumper", :total="pageData.total", :page-sizes="[10, 20, 40, 80]", :page-size="pageData.pageSize", @current-change="pageChange", @size-change="sizeChange")
 </template>

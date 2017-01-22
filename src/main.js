@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 if (process.env.NODE_ENV === 'production') {
-  Vue.http.options.root = 'http://42.96.203.79:8080'
+  Vue.http.options.root = 'http://api.diamondfsd.com'
   Vue.config.devtools = false
   Vue.config.silent = true
 } else {
