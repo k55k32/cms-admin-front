@@ -13,8 +13,9 @@ div
     el-table-column(prop="title" label="标题")
       template(scope="scope")
         u(@click="showPreview(scope.row)") {{scope.row.title}}
-    el-table-column(label="状态", inline-template, width="80px")
-      span {{status[row.status]}}
+    el-table-column(label="状态", width="80px")
+      template(scope="scope")
+        span {{status[scope.row.status]}}
     el-table-column(label="创建时间")
       template(scope="scope")
         el-date-picker(v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
@@ -25,7 +26,8 @@ div
         el-button(size="small", @click="publish(scope.row.id)" v-if='scope.row.status === 1') 发布
         el-button(size="small", @click="unpublish(scope.row.id)" v-if='scope.row.status === 2') 取消发布
         el-button(size="small", @click="edit(scope.row.id)") 编辑
-        el-button(size="small", type="danger", @click="remove(scope.row.id)") 删除
+        el-button(size="small", type="danger", @click="remove(scope.row.id)" v-if="scope.row.status !== 0") 删除
+        el-button(size="small", type="success", @click="recovery(scope.row.id)" v-if="scope.row.status === 0") 恢复
   .pagination
     el-pagination(layout="prev, pager, next", :total="pageData.total", :page-size="pageData.pageSize", @current-change="pageChange")
   el-dialog(:title="preview.title", v-model="previewShow", size="full")
@@ -40,7 +42,9 @@ import 'markdown-it-editor/lib/index.css'
 import { MarkdownPreview } from 'markdown-it-editor'
 import MarkdownMix from './MarkdownMix'
 const status = {
-  0: '已删除', 1: '草稿中', 2: '已发布'
+  2: '已发布',
+  1: '草稿中',
+  0: '已删除'
 }
 
 export default {
@@ -52,14 +56,6 @@ export default {
   computed: {
     status () {
       return status
-    },
-    statusFilter () {
-      return Object.keys(status).map(k => {
-        return {
-          text: status[k],
-          value: k
-        }
-      })
     }
   },
   data () {
@@ -92,6 +88,10 @@ export default {
     publish (id) {
       this.listLoading = true
       this.$post('article/publish/' + id).then(() => this.loadPage())
+    },
+    recovery (id) {
+      this.listLoading = true
+      this.$post('article/recovery/' + id).then(() => this.loadPage())
     },
     closeEdit () {
       this.editDialog = false

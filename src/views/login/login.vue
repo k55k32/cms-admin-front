@@ -34,12 +34,22 @@ export default {
       loading: false
     }
   },
+  mounted () {
+    this.$nextTick(() => {
+      let json = window.localStorage.getItem('user_history')
+      try {
+        let user = JSON.parse(json)
+        this.user = {...this.user, ...user}
+      } catch (__) {}
+    })
+  },
   methods: {
     onSubmit (e) {
       this.loading = true
       this.$post('user/token', this.user).then(({data}) => {
         let token = data
         return this.$store.dispatch('login', token).then(data => {
+          window.localStorage.setItem('user_history', JSON.stringify(this.user))
           this.$message.success('login success')
           let redirect = this.$route.query.redirect || '/'
           if (redirect) {
