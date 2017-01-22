@@ -56,7 +56,7 @@ Vue.mixin({
       let dataStr = ''
       Object.keys(data).forEach(k => {
         let value = data[k]
-        if (value !== null && value !== undefined) {
+        if (value !== null && value !== undefined && value !== '') {
           dataStr += `${k}=${value}&`
         }
       })

@@ -5,6 +5,11 @@
 export default {
   created () {
     if (this.autoload !== false) this.loadPage()
+    if (this.autoSearch) {
+      this.$watch('queryParams', () => {
+        this.loadPage()
+      }, {deep: true})
+    }
   },
   data () {
     return {

@@ -3,6 +3,11 @@ div
   .actions
     el-button(type="primary" @click="reload()") 刷新
     el-button(type="primary" @click="edit()") 新增
+  .filter
+    el-form(:inline="true")
+      el-form-item(label="状态")
+        el-select(v-model="queryParams.status" clearable )
+          el-option(v-for="v, k in status", :label="v", :value="k")
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="catalogName" label="栏目")
     el-table-column(prop="title" label="标题")
@@ -47,10 +52,20 @@ export default {
   computed: {
     status () {
       return status
+    },
+    statusFilter () {
+      return Object.keys(status).map(k => {
+        return {
+          text: status[k],
+          value: k
+        }
+      })
     }
   },
   data () {
     return {
+      autoSearch: true,
+      queryParams: {status: ''},
       preview: {},
       previewShow: false,
       saveOptions: { emulateJSON: false }
