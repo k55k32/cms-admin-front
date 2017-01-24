@@ -15,7 +15,9 @@
         el-table-column(label="访问时间")
           template(scope="scope")
             span {{scope.row.createTime | datetime}}
-        el-table-column(prop="ip" label="IP")
+        el-table-column(label="IP")
+          template(scope="scope")
+            span {{scope.row.ip + '@' + scope.row.location}}
         el-table-column(prop="userAgent" label="userAgent")
       .pagination
         el-pagination(layout="total, sizes, prev, pager, next, jumper", :total="pageData.total", :page-sizes="[10, 20, 40, 80]", :page-size="pageData.pageSize", @current-change="pageChange", @size-change="sizeChange")
