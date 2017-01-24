@@ -8,6 +8,9 @@ div
       el-form-item(label="状态")
         el-select(v-model="queryParams.status" clearable )
           el-option(v-for="v, k in status", :label="v.text", :value="k")
+      el-form-item(label="目录")
+        el-select(v-model="queryParams.catalog" clearable )
+          el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
     el-table-column(prop="catalogName" label="栏目")
     el-table-column(prop="title" label="标题")
@@ -58,10 +61,16 @@ export default {
       return status
     }
   },
+  created () {
+    this.$get('catalog/list').then(({data}) => {
+      this.catalogs = data
+    })
+  },
   data () {
     return {
+      catalogs: [],
       autoSearch: true,
-      queryParams: {status: ''},
+      queryParams: {status: '', catalog: ''},
       preview: {},
       previewShow: false,
       saveOptions: { emulateJSON: false }
