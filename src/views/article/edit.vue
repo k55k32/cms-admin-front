@@ -2,7 +2,14 @@
 .article-editor
   el-form(label-position="left", label-width="100px", :rules="rules", :model="form" ref="form")
     .flexrow
-      el-upload.flex-1.full-upload(:action="uploadUrl", name="file", :thumbnail-mode="true", type="drag",:on-success="uploadSuccess", :default-file-list="banner", :multiple="false")
+      el-upload.flex-1.full-upload(
+      :action="uploadConfig.url",
+      :name="uploadConfig.name",
+      :thumbnail-mode="true", type="drag",
+      :on-success="uploadSuccess",
+      :default-file-list="banner",
+      :multiple="false",
+      :on-error="uploadError")
         i.el-icon-upload
         .el-dragger__text 上传文章的banner图
       .flex-1
@@ -15,7 +22,11 @@
           el-select(v-model="form.tagIds", placeholder="请选择" multiple filterable allow-create)
             el-option(v-for="tag in tags", :label="tag.name", :value="tag.id")
     .markdown-editor
-      markdown-editor(ref="editor" v-model="form.content",:upload="{url: uploadUrl, name: 'file', accept: 'image/jpg,image/jpeg,image/png,image/gif'}", :options="MarkdownOptions", @save-history="saveHistory", height="100%", z-index="2017")
+      markdown-editor(ref="editor" v-model="form.content",
+      :upload="uploadConfig",
+      :options="MarkdownOptions",
+      @upload-error="uploadError"
+      @save-history="saveHistory", height="100%", z-index="2017")
     el-form-item(label="摘要" prop="summary" hidden)
       el-input(type="textarea" v-model="form.summary", :autosize="{ minRows: 4, maxRows: 8}")
     el-form-item.el-dialog__footer
@@ -58,13 +69,20 @@ export default {
     },
     isDraft () {
       return this.form.status === 1
+    },
+    uploadConfig () {
+      return {
+        url: Vue.globalOptions.uploadUrl,
+        name: 'file',
+        accept: 'image/jpg,image/jpeg,image/png,image/gif',
+        header: this.mix_headers
+      }
     }
   },
   data () {
     return {
       catalogs: [],
       tags: [],
-      uploadUrl: Vue.globalOptions.uploadUrl,
       form: {content: '', title: '', summary: '', banner: '', catalogId: null, status: 1, tagIds: [], ...this.data},
       rules: {
         title: {required: true}
@@ -72,6 +90,9 @@ export default {
     }
   },
   methods: {
+    uploadError (e) {
+      this.$message.error('upload error: ' + (e.responseText || e))
+    },
     uploadSuccess (r) {
       this.form.banner = r
     },

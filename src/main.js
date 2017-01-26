@@ -14,19 +14,22 @@ import filters from './filters'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueResource)
-
-if (process.env.NODE_ENV === 'production') {
+const isProd = process.env.NODE_ENV === 'production'
+let uploadUrl = ''
+if (isProd) {
   Vue.http.options.root = 'http://api.diamondfsd.com'
   Vue.config.devtools = false
   Vue.config.silent = true
+  uploadUrl = 'http://42.96.203.79:22222/upload'
 } else {
   // Vue.http.options.root = 'http://42.96.203.79:8080'
   Vue.http.options.root = 'http://127.0.0.1:8889'
+  uploadUrl = 'http://localhost:22222/upload'
 }
 
 Vue.http.options.emulateJSON = true
 Vue.globalOptions = {
-  uploadUrl: 'http://42.96.203.79:22222/upload'
+  uploadUrl: uploadUrl
 }
 
 Object.keys(filters).forEach(k => {
