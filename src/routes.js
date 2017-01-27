@@ -23,7 +23,6 @@ export default [
   {
     path: '/',
     name: 'index',
-    redirect: {name: 'article'},
     component: r => require(['src/views/index.vue'], r),
     children: [
       {

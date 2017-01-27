@@ -34,6 +34,15 @@ import menus from './menus'
 import edit from './user/edit'
 export default {
   components: {edit},
+  beforeRouteEnter (to, from, next) {
+    if (to.name === 'index') {
+      next(vm => {
+        vm.$router.replace({name: menus[0].name})
+      })
+    } else {
+      next()
+    }
+  },
   created () {
     this.$router.beforeEach((to, from, next) => {
       this.loadContent = true

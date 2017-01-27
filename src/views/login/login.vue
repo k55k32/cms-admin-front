@@ -40,6 +40,9 @@ export default {
       try {
         let user = JSON.parse(json)
         this.user = {...this.user, ...user}
+        if (this.user.username && this.user.password) {
+          this.onSubmit()
+        }
       } catch (__) {}
     })
   },

@@ -1,5 +1,10 @@
 export default [
   {
+    id: 'pageview',
+    text: '浏览记录',
+    name: 'pageview'
+  },
+  {
     id: 'article',
     text: '文章管理',
     name: 'article'
@@ -23,11 +28,6 @@ export default [
     id: 'email-config',
     text: '邮箱配置',
     name: 'email-config'
-  },
-  {
-    id: 'pageview',
-    text: '浏览记录',
-    name: 'pageview'
   },
   {
     id: 'setting',

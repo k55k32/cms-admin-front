@@ -7,7 +7,6 @@ var webpack = require('webpack')
 var opn = require('opn')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
-var mockserver = require('./mockserver/mockserver.js')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -73,5 +72,4 @@ module.exports = function() {
       opn(uri)
     }
   })
-  // mockserver(19999) // disable mockserver
 }()
