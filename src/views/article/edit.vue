@@ -9,6 +9,7 @@
       :on-success="uploadSuccess",
       :default-file-list="banner",
       :multiple="false",
+      :headers="uploadConfig.header",
       :on-error="uploadError")
         i.el-icon-upload
         .el-dragger__text 上传文章的banner图
