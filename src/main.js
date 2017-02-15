@@ -20,7 +20,7 @@ if (isProd) {
   Vue.http.options.root = 'http://api.diamondfsd.com'
   Vue.config.devtools = false
   Vue.config.silent = true
-  uploadUrl = 'http://42.96.203.79:22222/upload'
+  uploadUrl = 'http://file.diamondfsd.com/upload'
 } else {
   // Vue.http.options.root = 'http://42.96.203.79:8080'
   Vue.http.options.root = 'http://127.0.0.1:8889'
