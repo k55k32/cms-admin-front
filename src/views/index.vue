@@ -4,7 +4,7 @@ el-row.index-wrapper
     edit(:data="editData" @save="save" v-loading="saveLoading")
   .menu-toggle(@click="menuShowToggle")
     i.fa.fa-bars
-  el-col.nav(:span="4", v-show="menuShow")
+  el-col.nav(:span="3", v-show="menuShow")
     el-menu.nav-menu(theme='dark' , :default-active = "defaultItem.id" , :default-openeds="[defaultItem.parentId]" ,:router="true")
       .header-logo
         h2 Manager
@@ -15,7 +15,7 @@ el-row.index-wrapper
             i.el-icon-message
             | {{item.text}}
           el-menu-item(v-for="(child, index) in item.children", :index="child.id" , :route="{name: child.name}") {{child.text}}
-  el-col.content(:span="menuShow ? 20 : 24")
+  el-col.content(:span="menuShow ? 21 : 24")
     .content-header
       header
         h2.title {{defaultItem.text || $route.title}}
