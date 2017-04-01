@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "build-docs": "npm run build & git checkout gh-pages & xcopy /sy dist\\* . & git add . & git commit -m 'auto-pages' & git push & git checkout master",
+    "build-docs": "npm run build & node ./dist-build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
