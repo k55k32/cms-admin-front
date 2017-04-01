@@ -4,9 +4,11 @@
     el-form
       el-form-item(label="时间范围")
         el-date-picker(v-model='daterange', type='daterange', @change="rangeChange", align='left', placeholder='选择日期范围', :picker-options='pickerOptions')
-  el-tabs
+  el-tabs(v-model="currentTab")
     el-tab-pane(label='图表', name='first')
-      canvas(ref="chart" height="100")
+      el-row
+        el-col(:span="12")
+          canvas(ref="pvChart")
     el-tab-pane(label='详情', name='second')
       el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
         el-table-column(label="名称")
@@ -37,7 +39,6 @@ export default {
   mixins: [DTMix],
   watch: {
     daterange (val) {
-      // ISSUE the datetime changed on click TODO
       this.loadPage()
       this.loadCount()
     }
@@ -46,25 +47,20 @@ export default {
     rangeChange () {
       console.log('change-ranged')
     },
-    getDateToNow (num) {
-      const start = new Date()
-      const end = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * num)
-      return [start, end]
-    },
     loadCount (queryParams = this.queryParams) {
-      this.$get('pv/range-count', queryParams).then(({data}) => {
+      this.$get('pv/pv-count', queryParams).then(({data}) => {
         this.rangeData = data
+        console.log(this.pvData)
         this.renderChart()
       })
     },
     renderChart () {
-      let cxt = this.$refs.chart.getContext('2d')
+      let cxt = this.$refs.pvChart.getContext('2d')
       new Chart(cxt, {
         type: 'line',
         data: {
           labels: this.labels,
-          datasets: [ this.rangeDataCtd ]
+          datasets: [ this.pvDataCtd ]
         }
       })
     }
@@ -87,23 +83,27 @@ export default {
         end: end.getTime()
       }
     },
-    labels () {
-      let start = this.queryParams.start
-      let end = this.queryParams.end
-      let labels = []
-      for (let i = start; i <= end; i += 1000 * 60 * 60 * 24) {
-        let now = dateFormat(new Date(i), 'yyyy-MM-dd')
-        labels.push(now)
-      }
-      return labels
-    },
-    rangeDataCtd () {
-      let rangeData = []
-      this.labels.forEach((label) => {
-        rangeData.push(this.rangeData[label] || 0)
+    dataAnalysis () {
+      let data = {}
+      this.rangeData.forEach(pv => {
+        let timeKey = dateFormat(new Date(pv.createTime), 'yyyy-MM-dd')
+        let ips = data[timeKey] || []
+        ips.push(pv.ip)
+        data[timeKey] = ips
       })
+      return data
+    },
+    pvData () {
+      return Object.values(this.dataAnalysis).map(ips => {
+        return ips && ips.length
+      })
+    },
+    labels () {
+      return Object.keys(this.dataAnalysis)
+    },
+    pvDataCtd () {
       return {
-        data: rangeData,
+        data: this.pvData,
         label: 'PageView'
       }
     }
@@ -112,6 +112,7 @@ export default {
     return {
       url: 'pv',
       daterange: getDateToNow(7),
+      currentTab: 'first',
       rangeData: {},
       pickerOptions: {
         shortcuts: [{
