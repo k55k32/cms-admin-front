@@ -6,9 +6,13 @@
         el-date-picker(v-model='daterange', type='daterange', @change="rangeChange", align='left', placeholder='选择日期范围', :picker-options='pickerOptions')
   el-tabs(v-model="currentTab")
     el-tab-pane(label='图表', name='first')
+      p 今日数据统计
+      p PV: {{pvData[0]}} UV: {{uvData[0]}}
       el-row
         el-col(:span="12")
           canvas(ref="pvChart")
+        el-col(:span="12")
+          canvas(ref="uvChart")
     el-tab-pane(label='详情', name='second')
       el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
         el-table-column(label="名称")
@@ -50,18 +54,27 @@ export default {
     loadCount (queryParams = this.queryParams) {
       this.$get('pv/pv-count', queryParams).then(({data}) => {
         this.rangeData = data
-        console.log(this.pvData)
         this.renderChart()
       })
     },
     renderChart () {
-      let cxt = this.$refs.pvChart.getContext('2d')
-      new Chart(cxt, {
-        type: 'line',
-        data: {
-          labels: this.labels,
-          datasets: [ this.pvDataCtd ]
-        }
+      this.$nextTick(() => {
+        let cxt = this.$refs.pvChart.getContext('2d')
+        new Chart(cxt, {
+          type: 'line',
+          data: {
+            labels: this.labels,
+            datasets: [ this.pvDataCtd ]
+          }
+        })
+        let uvCxt = this.$refs.uvChart.getContext('2d')
+        new Chart(uvCxt, {
+          type: 'line',
+          data: {
+            labels: this.labels,
+            datasets: [ this.uvDataCtd ]
+          }
+        })
       })
     }
   },
@@ -98,13 +111,24 @@ export default {
         return ips && ips.length
       })
     },
+    uvData () {
+      return Object.values(this.dataAnalysis).map(ips => {
+        return new Set([...ips]).size
+      })
+    },
     labels () {
       return Object.keys(this.dataAnalysis)
+    },
+    uvDataCtd () {
+      return {
+        data: this.uvData,
+        label: 'UV'
+      }
     },
     pvDataCtd () {
       return {
         data: this.pvData,
-        label: 'PageView'
+        label: 'PV'
       }
     }
   },
@@ -113,7 +137,7 @@ export default {
       url: 'pv',
       daterange: getDateToNow(7),
       currentTab: 'first',
-      rangeData: {},
+      rangeData: [],
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
