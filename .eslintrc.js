@@ -20,5 +20,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // allow new for side effects
     "no-new": 0,
+    'comma-dangle': ['error', 'only-multiline'],
   }
 }
