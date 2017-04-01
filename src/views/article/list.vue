@@ -12,7 +12,7 @@ div
         el-select(v-model="queryParams.catalog" clearable )
           el-option(v-for="cata in catalogs", :label="cata.name", :value="cata.id")
   el-table(:data="pageData.data", border="", style="width: 100%" v-loading="listLoading")
-    el-table-column(prop="catalogName" label="栏目")
+    el-table-column(prop="catalogName" label="栏目" width="120px")
     el-table-column(prop="title" label="标题")
       template(scope="scope")
         u(@click="showPreview(scope.row)") {{scope.row.title}}
@@ -21,10 +21,10 @@ div
         el-tag(:type="status[scope.row.status].type") {{status[scope.row.status].text}}
     el-table-column(label="创建时间")
       template(scope="scope")
-        el-date-picker(v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
+        el-date-picker(min-width="300px", v-model="scope.row.createTime" type="datetime", :clearable="false", :editable="false", format="yyyy-MM-dd HH:mm", @change="updateCreateTime(scope.row.id, scope.row.createTime)")
     el-table-column(inline-template label="更新时间")
       span {{row.updateTime | datetime}}
-    el-table-column(:context="_self" label="操作", min-width="200px" )
+    el-table-column(:context="_self" label="操作", width="280px" )
       template(scope="scope")
         el-button(size="small", @click="publish(scope.row.id)" v-if='scope.row.status === 1') 发布
         el-button(size="small", @click="unpublish(scope.row.id)" v-if='scope.row.status === 2') 取消发布
