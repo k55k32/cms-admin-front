@@ -7,7 +7,7 @@
   el-tabs(v-model="currentTab")
     el-tab-pane(label='图表', name='first')
       p 今日数据统计
-      p PV: {{pvData[0]}} UV: {{uvData[0]}}
+      p PV: {{pvData[pvData.length - 1]}} UV: {{uvData[uvData.length - 1]}}
       el-row
         el-col(:span="12")
           canvas(ref="pvChart")
